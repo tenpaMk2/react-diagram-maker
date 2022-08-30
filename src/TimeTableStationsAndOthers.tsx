@@ -10,7 +10,7 @@ const TimeTableStationsAndOthers = ({ timetableStations }: Props) => (
       </>
     ) : null}
     {timetableStations.map((key) => (
-      <div key={key} className="text-right odd:pb-8">
+      <div key={key} className="text-right even:pb-8">
         {key}
       </div>
     ))}
