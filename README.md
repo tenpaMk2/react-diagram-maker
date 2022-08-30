@@ -9,6 +9,10 @@ Techs:
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 
+## live demo
+
+<https://tenpamk2-blog.netlify.app/apps/react-diagram-maker/>
+
 ## screenshot
 
 ![1](./img/1.png)
