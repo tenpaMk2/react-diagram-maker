@@ -59,6 +59,7 @@ const TimeSection = ({
           borderColor: "",
           backgroundColor: "",
           repeat: 1,
+          isMoveForward: false,
         };
       });
     });
