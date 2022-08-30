@@ -72,7 +72,7 @@ const TimeSection = ({
     createStationsForTimetable(stations);
   const tempStyleForBug = {
     gridTemplateRows: `repeat(${
-      timetableLabels.length + 2
+      timetableLabels.length + 3
     }, minmax(min-content, max-content)`,
   };
 
@@ -98,7 +98,7 @@ const TimeSection = ({
       />
 
       <div
-        className={`grid grid-flow-col auto-rows-min items-baseline gap-x-4 gap-y-2`}
+        className={`grid grid-flow-col auto-rows-min items-baseline gap-x-4 gap-y-2 rounded-xl bg-white p-4`}
         style={tempStyleForBug}
       >
         <TimeTableStationsAndOthers timetableStations={timetableLabels} />

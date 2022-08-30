@@ -34,7 +34,7 @@ const createDatasets = (
     const startTimeMS = new Date(trainDataset.data[0].x).getTime();
     if (Number.isNaN(startTimeMS))
       return {
-        label: trainDataset.label,
+        label: trainDataset.label, // @ts-ignore
         data: data,
         borderColor: trainDataset.borderColor,
         backgroundColor: trainDataset.backgroundColor,
@@ -45,7 +45,7 @@ const createDatasets = (
     ).getTime();
     if (Number.isNaN(endTimeMS))
       return {
-        label: trainDataset.label,
+        label: trainDataset.label, // @ts-ignore
         data: data,
         borderColor: trainDataset.borderColor,
         backgroundColor: trainDataset.backgroundColor,
@@ -75,7 +75,7 @@ const createDatasets = (
     }
 
     return {
-      label: trainDataset.label,
+      label: trainDataset.label, // @ts-ignore
       data: repeatedData,
       borderColor: trainDataset.borderColor,
       backgroundColor: trainDataset.backgroundColor,

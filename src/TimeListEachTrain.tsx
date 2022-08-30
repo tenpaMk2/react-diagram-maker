@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import IsMoveForward from "./IsMoveForward";
 import RepeatInput from "./RepeatInput";
 import TimeInput from "./TimeInput";
 
-export type XYKey = { x: string; y: string; key: string };
+export type XYKey = { x: string; y: string; key: string; value: string };
 
 export type TrainDataset = {
   label: string;
@@ -10,6 +11,7 @@ export type TrainDataset = {
   borderColor: string; // ex: "rgba(255, 99, 132, 1)"
   backgroundColor: string; // ex: "rgba(255, 99, 132, 0.5)",
   repeat: number;
+  isMoveForward: boolean;
 };
 
 const colors = [
@@ -64,6 +66,7 @@ const TimeListEachTrain = ({
     borderColor: colors[colorIdx].borderColor,
     backgroundColor: colors[colorIdx].backgroundColor,
     repeat: 1,
+    isMoveForward: false,
   });
 
   useEffect(() => {
@@ -82,6 +85,7 @@ const TimeListEachTrain = ({
         x: "",
         y: timetableStations[idx],
         key: key,
+        value: "",
       }));
 
       const newData = blankXYKeys.map((blankXYKey) => {
@@ -102,21 +106,57 @@ const TimeListEachTrain = ({
     key: string
   ) => {
     setTrainDataset((prev) => {
-      const newData = [...prev.data];
-
-      let x: string;
       const date = new Date(`2022-08-26T${time}:00`);
       if (Number.isNaN(date.getTime())) {
-        x = "";
-      } else {
-        x = date.toISOString();
+        return prev;
       }
 
-      newData[dataIdx] = {
-        x: x,
-        y: station,
-        key: key,
-      };
+      const prevDate = new Date(prev.data[dataIdx].x);
+      if (Number.isNaN(prevDate.getTime())) {
+        const newData = [...prev.data];
+        newData[dataIdx] = {
+          x: date.toISOString(),
+          y: station,
+          key: key,
+          value: time,
+        };
+        return {
+          ...prev,
+          data: newData,
+        };
+      }
+
+      if (!prev.isMoveForward) {
+        const newData = [...prev.data];
+
+        newData[dataIdx] = {
+          x: date.toISOString(),
+          y: prev.data[dataIdx].y,
+          key: prev.data[dataIdx].key,
+          value: `${("00" + date.getHours()).slice(-2)}:${(
+            "00" + date.getMinutes()
+          ).slice(-2)}`,
+        };
+
+        return { ...prev, data: newData };
+      }
+
+      const newData = [...prev.data];
+      const diffMS = date.getTime() - prevDate.getTime();
+      for (let idx = dataIdx; idx < prev.data.length; idx++) {
+        const date = new Date(prev.data[idx].x);
+        if (Number.isNaN(date.getTime())) continue;
+
+        date.setMilliseconds(diffMS);
+        newData[idx] = {
+          x: date.toISOString(),
+          y: prev.data[idx].y,
+          key: prev.data[idx].key,
+          value: `${("00" + date.getHours()).slice(-2)}:${(
+            "00" + date.getMinutes()
+          ).slice(-2)}`,
+        };
+      }
 
       return { ...prev, data: newData };
     });
@@ -126,19 +166,35 @@ const TimeListEachTrain = ({
     setTrainDataset((prev) => ({ ...prev, repeat: repeat }));
   };
 
+  const onIsMoveForwardChange = (isMoveForward: boolean) => {
+    setTrainDataset((prev) => ({ ...prev, isMoveForward: isMoveForward }));
+  };
+
+  const getValueByKey = (key: string) => {
+    const filtered = trainDataset.data.filter((xYKey) => xYKey.key === key);
+    return filtered.length === 1 ? filtered[0].value : "";
+  };
+
   return (
     <>
       <h3 className="text-center text-xl">{train}</h3>
 
       {timetableStations.length ? (
-        <RepeatInput onRepeatChange={onRepeatChange} />
+        <>
+          <IsMoveForward onIsMoveForwardChange={onIsMoveForwardChange} />
+          <RepeatInput onRepeatChange={onRepeatChange} />
+        </>
       ) : (
-        <div></div>
+        <>
+          <div></div>
+          <div></div>
+        </>
       )}
 
       {inputKeys.map((key, idx) => (
         <TimeInput
           key={key}
+          value={getValueByKey(key)}
           onTimeChange={(time: string) => {
             onTimeChange(time, idx, timetableStations[idx], key);
           }}
