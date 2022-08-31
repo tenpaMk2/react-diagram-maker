@@ -1,76 +1,56 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import TimeListEachTrain, { TrainDataset } from "./TimeListEachTrain";
 import TimeTableStationsAndOthers from "./TimeTableStationsAndOthers";
 
-const createStationsForTimetable = (
-  stations: string[]
-): [string[], string[]] => {
+export const stationsToDownAndUpStations = (stations: string[]): string[] => {
   const downAndUpSingle = [...stations, ...stations.slice(0, -1).reverse()];
   let double: string[] = [];
   downAndUpSingle.forEach((station) => double.push(station, station));
   double.shift();
+  return double;
+};
 
-  let downAndUpKeys: string[] = [];
+export const stationsToTimetableLabels = (stations: string[]): string[] => {
+  let timetableLabels: string[] = [];
   stations.forEach((station, idx) => {
     if (idx !== 0) {
-      downAndUpKeys.push(`↓${station}:着`);
+      timetableLabels.push(`↓${station}:着`);
     }
     if (idx !== stations.length - 1) {
-      downAndUpKeys.push(`↓${station}:発`);
+      timetableLabels.push(`↓${station}:発`);
     }
   });
   [...stations].reverse().forEach((station, idx) => {
     if (idx !== 0) {
-      downAndUpKeys.push(`↑${station}:着`);
+      timetableLabels.push(`↑${station}:着`);
     }
-    downAndUpKeys.push(`↑${station}:発`);
+    timetableLabels.push(`↑${station}:発`);
   });
 
-  return [double, downAndUpKeys];
+  return timetableLabels;
 };
 
 type Props = {
   stations: string[];
-  onTrainDatasetsChange: (newDatasets: TrainDataset[]) => void;
+  trainDatasets: TrainDataset[];
+  addTrain: (trainName: string) => void;
+  onIsMoveForwardChange: (trainName: string, isMoveForward: boolean) => void;
+  onRepeatChange: (trainName: string, repeat: number) => void;
+  onTimeChange: (trainName: string, key: string, time: Date) => void;
 };
 
 const TimeSection = ({
   stations,
-  onTrainDatasetsChange: onDatasetsChange,
+  trainDatasets,
+  addTrain,
+  onIsMoveForwardChange,
+  onRepeatChange,
+  onTimeChange,
 }: Props) => {
-  const [trains, setTrains] = useState<string[]>([]);
   const [trainText, setTrainText] = useState<string>("");
-  const [trainDatasets, setTrainDatasets] = useState<TrainDataset[]>([]);
 
-  // initilize `trainDatasets` when `trains` change.
-  useEffect(() => {
-    setTrainDatasets((prev: TrainDataset[]) => {
-      return trains.map((train) => {
-        const filtered = prev.filter(
-          (trainDataset) => trainDataset.label === train
-        );
+  const timetableLabels = stationsToTimetableLabels(stations);
 
-        if (2 <= filtered.length) throw new Error("Duplicate train names!!");
-        if (filtered.length === 1) return filtered[0];
-
-        return {
-          label: train,
-          data: [],
-          borderColor: "",
-          backgroundColor: "",
-          repeat: 1,
-          isMoveForward: false,
-        };
-      });
-    });
-  }, [trains]);
-
-  useEffect(() => {
-    onDatasetsChange(trainDatasets);
-  }, [trainDatasets]);
-
-  const [timetableStations, timetableLabels] =
-    createStationsForTimetable(stations);
   const tempStyleForBug = {
     gridTemplateRows: `repeat(${
       timetableLabels.length + 3
@@ -93,7 +73,7 @@ const TimeSection = ({
           if (e.key !== "Enter") return;
           if (!trainText.match(/\S/g)) return;
 
-          setTrains((prev) => [...prev, trainText]);
+          addTrain(trainText);
           setTrainText("");
         }}
       />
@@ -104,18 +84,14 @@ const TimeSection = ({
       >
         <TimeTableStationsAndOthers timetableStations={timetableLabels} />
 
-        {trains.map((train, idx) => (
+        {trainDatasets.map((trainDataset) => (
           <TimeListEachTrain
-            train={train}
-            timetableStations={timetableStations}
-            inputKeys={timetableLabels}
-            colorIdx={idx}
-            onDatasetChange={(newDataset: TrainDataset) => {
-              const newDatasets = [...trainDatasets];
-              newDatasets[idx] = newDataset;
-              setTrainDatasets(newDatasets);
-            }}
-            key={train}
+            key={trainDataset.train}
+            stations={stations}
+            trainDataset={trainDataset}
+            onIsMoveForwardChange={onIsMoveForwardChange}
+            onRepeatChange={onRepeatChange}
+            onTimeChange={onTimeChange}
           />
         ))}
       </div>
