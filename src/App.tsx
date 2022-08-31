@@ -11,6 +11,7 @@ import StationSection from "./StationSection";
 import TimeSection from "./TimeSection";
 import { TrainDataset } from "./TimeListEachTrain";
 import ChartSection from "./ChartSection";
+import Footer from "./Footer";
 
 ChartJS.register(...registerables);
 
@@ -144,6 +145,8 @@ const App = () => {
       />
 
       <ChartSection options={options} data={data} />
+
+      <Footer />
     </div>
   );
 };
