@@ -127,7 +127,7 @@ const App = () => {
   return (
     <div className="m-4 rounded-lg bg-slate-100 p-4">
       <h1 className="text-center text-4xl text-gray-900">
-        ダイアグラム生成くん
+        ダイヤグラム生成くん
       </h1>
 
       <StationSection
