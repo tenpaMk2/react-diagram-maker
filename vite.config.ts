@@ -8,4 +8,7 @@ export default defineConfig({
     host: true,
   },
   base: "/apps/react-diagram-maker/",
+  build: {
+    outDir: "react-diagram-maker",
+  },
 });
