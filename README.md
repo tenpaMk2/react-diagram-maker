@@ -8,6 +8,7 @@ Techs:
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Chart.js](https://www.chartjs.org/)
 
 ## live demo
 
