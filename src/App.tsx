@@ -167,6 +167,11 @@ const App = () => {
       },
     },
     showLine: true,
+    elements: {
+      point: {
+        radius: 0,
+      },
+    },
   };
 
   const data: ChartData<"scatter"> = {
