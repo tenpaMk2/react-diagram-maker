@@ -1,7 +1,6 @@
 import IsMoveForward from "./IsMoveForward";
 import RepeatInput from "./RepeatInput";
 import TimeInput from "./TimeInput";
-import { stationsToTimetableLabels } from "./TimeSection";
 
 export type XYKey = { x: Date; y: string; key: string };
 

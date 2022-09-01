@@ -8,13 +8,13 @@ import {
 import "chartjs-adapter-moment";
 import { useState } from "react";
 import StationSection from "./StationSection";
-import TimeSection, {
+import TimeInputsSection, {
   stationsToDownAndUpStations,
-  stationsToTimetableLabels,
-} from "./TimeSection";
+  stationsToTimeInputsLabels,
+} from "./TimeInputsSection";
 import ChartSection from "./ChartSection";
 import Footer from "./Footer";
-import { TrainDataset, XYKey } from "./TimeListEachTrain";
+import { TrainDataset, XYKey } from "./TimeInputsEachTrain";
 
 ChartJS.register(...registerables);
 
@@ -116,20 +116,20 @@ const App = () => {
   const onChangeStations = (stations: string[]) => {
     setTrainDatasets((prev) => {
       const downAndUpStations = stationsToDownAndUpStations(stations);
-      const timetableLabels = stationsToTimetableLabels(stations);
+      const timeInputsLabels = stationsToTimeInputsLabels(stations);
 
       const newTrainDatasets = prev.map((prevTrainDataset) => {
-        const prevTimetableLabels = prevTrainDataset.data.map(
+        const prevTimeInputsLabels = prevTrainDataset.data.map(
           (xYKey) => xYKey.key
         );
 
         if (
-          JSON.stringify(prevTimetableLabels) ===
-          JSON.stringify(timetableLabels)
+          JSON.stringify(prevTimeInputsLabels) ===
+          JSON.stringify(timeInputsLabels)
         )
           return prevTrainDataset;
 
-        const blankXYKeys: XYKey[] = timetableLabels.map((label, idx) => ({
+        const blankXYKeys: XYKey[] = timeInputsLabels.map((label, idx) => ({
           x: new Date("invalid"),
           y: downAndUpStations[idx],
           key: label,
@@ -210,14 +210,14 @@ const App = () => {
       }
 
       const downAndUpStations = stationsToDownAndUpStations(stations);
-      const timetableLabels = stationsToTimetableLabels(stations);
+      const timeInputsLabels = stationsToTimeInputsLabels(stations);
 
       const initialTrainDataset: TrainDataset = {
         train: trainName,
-        data: timetableLabels.map((timetablelabel, idx) => ({
+        data: timeInputsLabels.map((timeInputslabel, idx) => ({
           x: new Date("invalid"),
           y: downAndUpStations[idx],
-          key: timetablelabel,
+          key: timeInputslabel,
         })),
         borderColor: colors[prev.length].borderColor, // todo: limit length
         backgroundColor: colors[prev.length].backgroundColor,
@@ -326,7 +326,7 @@ const App = () => {
         removeStation={removeStation}
       />
 
-      <TimeSection
+      <TimeInputsSection
         stations={stations}
         trainDatasets={trainDatasets}
         addTrain={addTrain}

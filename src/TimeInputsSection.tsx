@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import TimeListEachTrain, { TrainDataset } from "./TimeListEachTrain";
-import TimeTableStationsAndOthers from "./TimeTableStationsAndOthers";
+import TimeListEachTrain, { TrainDataset } from "./TimeInputsEachTrain";
+import TimeInputsStationsAndOthers from "./TimeInputsStationsAndOthers";
 
 export const stationsToDownAndUpStations = (stations: string[]): string[] => {
   const downAndUpSingle = [...stations, ...stations.slice(0, -1).reverse()];
@@ -10,24 +10,24 @@ export const stationsToDownAndUpStations = (stations: string[]): string[] => {
   return double;
 };
 
-export const stationsToTimetableLabels = (stations: string[]): string[] => {
-  let timetableLabels: string[] = [];
+export const stationsToTimeInputsLabels = (stations: string[]): string[] => {
+  let timeInputsLabels: string[] = [];
   stations.forEach((station, idx) => {
     if (idx !== 0) {
-      timetableLabels.push(`↓${station}:着`);
+      timeInputsLabels.push(`↓${station}:着`);
     }
     if (idx !== stations.length - 1) {
-      timetableLabels.push(`↓${station}:発`);
+      timeInputsLabels.push(`↓${station}:発`);
     }
   });
   [...stations].reverse().forEach((station, idx) => {
     if (idx !== 0) {
-      timetableLabels.push(`↑${station}:着`);
+      timeInputsLabels.push(`↑${station}:着`);
     }
-    timetableLabels.push(`↑${station}:発`);
+    timeInputsLabels.push(`↑${station}:発`);
   });
 
-  return timetableLabels;
+  return timeInputsLabels;
 };
 
 type Props = {
@@ -39,7 +39,7 @@ type Props = {
   onTimeChange: (trainName: string, key: string, time: Date) => void;
 };
 
-const TimeSection = ({
+const TimeInputsSection = ({
   stations,
   trainDatasets,
   addTrain,
@@ -49,11 +49,11 @@ const TimeSection = ({
 }: Props) => {
   const [trainText, setTrainText] = useState<string>("");
 
-  const timetableLabels = stationsToTimetableLabels(stations);
+  const timeInputsLabels = stationsToTimeInputsLabels(stations);
 
   const tempStyleForBug = {
     gridTemplateRows: `repeat(${
-      timetableLabels.length + 3
+      timeInputsLabels.length + 3
     }, minmax(min-content, max-content)`,
   };
 
@@ -82,7 +82,7 @@ const TimeSection = ({
         className={`grid grid-flow-col auto-rows-min items-baseline gap-x-4 gap-y-2 rounded-xl bg-white p-4`}
         style={tempStyleForBug}
       >
-        <TimeTableStationsAndOthers timetableStations={timetableLabels} />
+        <TimeInputsStationsAndOthers timeInputsStations={timeInputsLabels} />
 
         {trainDatasets.map((trainDataset) => (
           <TimeListEachTrain
@@ -98,4 +98,4 @@ const TimeSection = ({
   );
 };
 
-export default TimeSection;
+export default TimeInputsSection;

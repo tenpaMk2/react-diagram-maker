@@ -1,15 +1,15 @@
-type Props = { timetableStations: string[] };
+type Props = { timeInputsStations: string[] };
 
-const TimeTableStationsAndOthers = ({ timetableStations }: Props) => (
+const TimeInputsStationsAndOthers = ({ timeInputsStations }: Props) => (
   <>
-    {timetableStations.length ? (
+    {timeInputsStations.length ? (
       <>
         <div className="text-right"></div>
         <div className="pb-4 text-right">連動繰り上げ</div>
         <div className="pb-4 text-right">繰り返し回数</div>
       </>
     ) : null}
-    {timetableStations.map((key) => (
+    {timeInputsStations.map((key) => (
       <div key={key} className="text-right even:pb-8">
         {key}
       </div>
@@ -17,4 +17,4 @@ const TimeTableStationsAndOthers = ({ timetableStations }: Props) => (
   </>
 );
 
-export default TimeTableStationsAndOthers;
+export default TimeInputsStationsAndOthers;
