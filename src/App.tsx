@@ -176,6 +176,7 @@ const App = () => {
         radius: 0,
       },
     },
+    maintainAspectRatio: false,
   };
 
   const data: ChartData<"scatter"> = {
