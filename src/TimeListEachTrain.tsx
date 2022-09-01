@@ -51,6 +51,7 @@ const TimeListEachTrain = ({
             }
           />
           <RepeatInput
+            value={trainDataset.repeat}
             onRepeatChange={(repeat: number) =>
               onRepeatChange(trainDataset.train, repeat)
             }

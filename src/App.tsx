@@ -216,7 +216,7 @@ const App = () => {
         })),
         borderColor: colors[prev.length].borderColor, // todo: limit length
         backgroundColor: colors[prev.length].backgroundColor,
-        repeat: 0,
+        repeat: 1,
         isMoveForward: false,
       };
 
