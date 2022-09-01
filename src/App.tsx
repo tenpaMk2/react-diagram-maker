@@ -15,6 +15,7 @@ import TimeInputsSection, {
 import ChartSection from "./ChartSection";
 import Footer from "./Footer";
 import { TrainDataset, XYKey } from "./TimeInputsEachTrain";
+import TimetableSection from "./TimetableSection";
 
 ChartJS.register(...registerables);
 
@@ -336,6 +337,8 @@ const App = () => {
       />
 
       <ChartSection options={options} data={data} />
+
+      <TimetableSection data={data} />
 
       <Footer />
     </div>
