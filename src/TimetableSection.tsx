@@ -9,7 +9,10 @@ const TimetableSection = ({ data }: Props) => {
   const hourAndMinutes: ReactNode[][] = [];
 
   for (let hour = 0; hour < 24; hour++) {
-    hourAndMinutes[hour] = [<time>{hour}</time>, <div>🚧</div>];
+    hourAndMinutes[hour] = [
+      <time key={`time:${hour}`}>{hour}</time>,
+      <div key={`div:${hour}`}>🚧</div>,
+    ];
   }
 
   return (
