@@ -59,7 +59,7 @@ const TimeSection = ({
 
   return (
     <section className="mx-4 my-8 flex auto-cols-min flex-col gap-4">
-      <h2 className="text-2xl">時刻表</h2>
+      <h2 className="text-2xl">時刻入力</h2>
 
       <input
         type="text"
