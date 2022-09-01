@@ -87,7 +87,6 @@ const TimeSection = ({
         {trainDatasets.map((trainDataset) => (
           <TimeListEachTrain
             key={trainDataset.train}
-            stations={stations}
             trainDataset={trainDataset}
             onIsMoveForwardChange={onIsMoveForwardChange}
             onRepeatChange={onRepeatChange}

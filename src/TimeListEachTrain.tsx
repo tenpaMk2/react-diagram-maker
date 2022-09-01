@@ -25,7 +25,6 @@ const inputValueToDate = (inputValue: string) =>
   new Date(`2022-08-26T${inputValue}:00`);
 
 type Props = {
-  stations: string[];
   trainDataset: TrainDataset;
   onIsMoveForwardChange: (trainName: string, isMoveForward: boolean) => void;
   onRepeatChange: (trainName: string, repeat: number) => void;
@@ -33,7 +32,6 @@ type Props = {
 };
 
 const TimeListEachTrain = ({
-  stations,
   trainDataset,
   onIsMoveForwardChange,
   onRepeatChange,
@@ -43,7 +41,7 @@ const TimeListEachTrain = ({
     <>
       <h3 className="text-center text-xl">{trainDataset.train}</h3>
 
-      {stations.length ? (
+      {trainDataset.data.length ? (
         <>
           <IsMoveForward
             onIsMoveForwardChange={(is: boolean) =>
@@ -64,22 +62,15 @@ const TimeListEachTrain = ({
         </>
       )}
 
-      {stationsToTimetableLabels(stations).map((label, idx) => {
-        console.log(label);
-        return (
-          <TimeInput
-            key={label}
-            value={dateToInputValue(trainDataset.data[idx].x)}
-            onTimeChange={(time: string) => {
-              onTimeChange(
-                trainDataset.train,
-                trainDataset.data[idx].key,
-                inputValueToDate(time)
-              );
-            }}
-          />
-        );
-      })}
+      {trainDataset.data.map((xYKey) => (
+        <TimeInput
+          key={xYKey.key}
+          value={dateToInputValue(xYKey.x)}
+          onTimeChange={(time: string) => {
+            onTimeChange(trainDataset.train, xYKey.key, inputValueToDate(time));
+          }}
+        />
+      ))}
     </>
   );
 };
