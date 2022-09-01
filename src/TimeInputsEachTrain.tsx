@@ -2,7 +2,7 @@ import IsMoveForward from "./IsMoveForward";
 import RepeatInput from "./RepeatInput";
 import TimeInput from "./TimeInput";
 
-export type XYKey = { x: Date; y: string; key: string };
+export type XYKey = { x: Date; y: string; key: string; isPass: boolean };
 
 export type TrainDataset = {
   train: string;
@@ -28,6 +28,7 @@ type Props = {
   onIsMoveForwardChange: (trainName: string, isMoveForward: boolean) => void;
   onRepeatChange: (trainName: string, repeat: number) => void;
   onTimeChange: (trainName: string, key: string, time: Date) => void;
+  onIsPassChange: (trainName: string, key: string, isPass: boolean) => void;
 };
 
 const TimeListEachTrain = ({
@@ -35,6 +36,7 @@ const TimeListEachTrain = ({
   onIsMoveForwardChange,
   onRepeatChange,
   onTimeChange,
+  onIsPassChange,
 }: Props) => {
   return (
     <>
@@ -65,9 +67,13 @@ const TimeListEachTrain = ({
         <TimeInput
           key={xYKey.key}
           value={dateToInputValue(xYKey.x)}
+          isPass={xYKey.isPass}
           onTimeChange={(time: string) => {
             onTimeChange(trainDataset.train, xYKey.key, inputValueToDate(time));
           }}
+          onIsPassChange={(isPass: boolean) =>
+            onIsPassChange(trainDataset.train, xYKey.key, isPass)
+          }
         />
       ))}
     </>

@@ -62,8 +62,10 @@ const trainDatasetsToChartDatasets = (
         backgroundColor: trainDataset.backgroundColor,
       };
 
+    const notPassXYKeys = trainDataset.data.filter((xYKey) => !xYKey.isPass);
+
     type XY = { x: Date; y: string };
-    const data: XY[] = trainDataset.data.map((xYKey) => {
+    const data: XY[] = notPassXYKeys.map((xYKey) => {
       return { x: new Date(xYKey.x), y: xYKey.y };
     });
 
@@ -134,6 +136,7 @@ const App = () => {
           x: new Date("invalid"),
           y: downAndUpStations[idx],
           key: label,
+          isPass: false,
         }));
 
         const newData = blankXYKeys.map((blankXYKey) => {
@@ -219,6 +222,7 @@ const App = () => {
           x: new Date("invalid"),
           y: downAndUpStations[idx],
           key: timeInputslabel,
+          isPass: false,
         })),
         borderColor: colors[prev.length].borderColor, // todo: limit length
         backgroundColor: colors[prev.length].backgroundColor,
@@ -303,8 +307,44 @@ const App = () => {
           x: prevTime,
           y: prevTrainDataset.data[idx].y,
           key: prevTrainDataset.data[idx].key,
+          isPass: prevTrainDataset.data[idx].isPass,
         };
       }
+
+      const newTrainDataset = { ...prevTrainDataset, data: newData };
+
+      const newTrainDatasets = [...prev];
+      newTrainDatasets[trainIdx] = newTrainDataset;
+
+      return newTrainDatasets;
+    });
+  };
+
+  const onIsPassChange = (trainName: string, key: string, isPass: boolean) => {
+    setTrainDatasets((prev) => {
+      const trains = prev.map((prevTrainDataset) => prevTrainDataset.train);
+      const trainIdx = trains.indexOf(trainName);
+      if (trainIdx === -1) {
+        // TODO: error invalid trainName;
+        return prev;
+      }
+      const prevTrainDataset = prev[trainIdx];
+
+      const keys = prevTrainDataset.data.map((xYKey) => xYKey.key);
+      const dataIdx = keys.indexOf(key);
+      if (dataIdx === -1) {
+        // TODO: error invalid key;
+        return prev;
+      }
+
+      const newXYKey = {
+        ...prevTrainDataset.data[dataIdx],
+        key: key,
+        isPass: isPass,
+      };
+
+      const newData = [...prevTrainDataset.data];
+      newData[dataIdx] = newXYKey;
 
       const newTrainDataset = { ...prevTrainDataset, data: newData };
 
@@ -334,6 +374,7 @@ const App = () => {
         onIsMoveForwardChange={onIsMoveForwardChange}
         onRepeatChange={onRepeatChange}
         onTimeChange={onTimeChange}
+        onIsPassChange={onIsPassChange}
       />
 
       <ChartSection options={options} data={data} />
