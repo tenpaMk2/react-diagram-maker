@@ -157,7 +157,7 @@ const App = () => {
           unit: "hour",
           stepSize: 1,
           displayFormats: {
-            hour: "hh:mm",
+            hour: "HH:mm",
           },
         },
       },
