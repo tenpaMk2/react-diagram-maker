@@ -21,32 +21,32 @@ ChartJS.register(...registerables);
 
 const colors = [
   {
-    borderColor: "rgba(255, 99, 132, 1)",
-    backgroundColor: "rgba(255, 99, 132, 0.5)",
+    borderColor: "rgba(255,99,132,1)", // Never use space because of tailwind's restriction
+    backgroundColor: "rgba(255,99,132,0.5)",
   },
   {
-    borderColor: "rgba(255, 159, 64, 1)",
-    backgroundColor: "rgba(255, 159, 64, 0.5)",
+    borderColor: "rgba(255,159,64,1)",
+    backgroundColor: "rgba(255,159,64,0.5)",
   },
   {
-    borderColor: "rgba(255, 205, 86, 1)",
-    backgroundColor: "rgba(255, 205, 86, 0.5)",
+    borderColor: "rgba(255,205,86,1)",
+    backgroundColor: "rgba(255,205,86,0.5)",
   },
   {
-    borderColor: "rgba(75, 192, 192, 1)",
-    backgroundColor: "rgba(75, 192, 192, 0.5)",
+    borderColor: "rgba(75,192,192,1)",
+    backgroundColor: "rgba(75,192,192,0.5)",
   },
   {
-    borderColor: "rgba(54, 162, 235, 1)",
-    backgroundColor: "rgba(54, 162, 235, 0.5)",
+    borderColor: "rgba(54,162,235,1)",
+    backgroundColor: "rgba(54,162,235,0.5)",
   },
   {
-    borderColor: "rgb(a153, 102, 255, 1)",
-    backgroundColor: "rgb(a153, 102, 255, 0.5)",
+    borderColor: "rgb(a153,102,255,1)",
+    backgroundColor: "rgb(a153,102,255,0.5)",
   },
   {
-    borderColor: "rgba(201, 203, 20, 17",
-    backgroundColor: "rgba(201, 203, 20, 0.57",
+    borderColor: "rgba(201,203,20,17",
+    backgroundColor: "rgba(201,203,20,0.57",
   },
 ];
 
@@ -380,7 +380,7 @@ const App = () => {
 
       <ChartSection options={options} data={data} />
 
-      <TimetableSection data={data} />
+      <TimetableSection trainDatasets={trainDatasets} />
 
       <Footer />
     </div>
