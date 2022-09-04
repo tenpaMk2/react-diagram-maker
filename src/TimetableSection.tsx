@@ -119,7 +119,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
   return (
     <section className="mx-4 my-8 flex flex-col gap-2">
       <h2 className="text-2xl">時刻表</h2>
-      <section className="flex flex-wrap justify-around gap-8">
+      <section className="flex flex-wrap justify-around gap-8 rounded-xl bg-white p-8">
         {timetables}
       </section>
     </section>
