@@ -13,7 +13,9 @@ const TimetableSection = ({ trainDatasets }: Props) => {
     trainDatasets.length === 0
       ? []
       : extrudeXYKeysOnlyDeparture(trainDatasets[0].data);
-  const departureStations = xYKeysOnlyDeparture.map((xYKey) => xYKey.key);
+  const departureStations = xYKeysOnlyDeparture
+    .map((xYKey) => xYKey.key)
+    .slice(0, -1); // skip last because the up and first station is invalid.
 
   const baseDatas: {
     key: string;
