@@ -1,14 +1,116 @@
-import { ChartData, ChartOptions } from "chart.js";
+import {
+  Chart as ChartJS,
+  ChartData,
+  ChartDataset,
+  ChartOptions,
+  registerables,
+} from "chart.js";
+import "chartjs-adapter-moment";
 import { ChangeEvent, useState } from "react";
 import { Scatter } from "react-chartjs-2";
+import { TrainDataset } from "./TimeInputsEachTrain";
+
+ChartJS.register(...registerables);
+
+const trainDatasetsToChartDatasets = (
+  trainDatasets: TrainDataset[]
+): ChartDataset<"scatter">[] =>
+  trainDatasets.map((trainDataset): ChartDataset<"scatter"> => {
+    if (trainDataset.data.length === 0)
+      return {
+        label: trainDataset.train,
+        data: [],
+        borderColor: trainDataset.borderColor,
+        backgroundColor: trainDataset.backgroundColor,
+      };
+
+    const notPassXYKeys = trainDataset.data.filter((xYKey) => !xYKey.isPass);
+
+    type XY = { x: Date; y: string };
+    const data: XY[] = notPassXYKeys.map((xYKey) => {
+      return { x: new Date(xYKey.x), y: xYKey.y };
+    });
+
+    const startTimeMS = data[0].x.getTime();
+    if (Number.isNaN(startTimeMS))
+      return {
+        label: trainDataset.train, // @ts-ignore
+        data: data,
+        borderColor: trainDataset.borderColor,
+        backgroundColor: trainDataset.backgroundColor,
+      };
+
+    const endTimeMS = data[data.length - 1].x.getTime();
+    if (Number.isNaN(endTimeMS))
+      return {
+        label: trainDataset.train, // @ts-ignore
+        data: data,
+        borderColor: trainDataset.borderColor,
+        backgroundColor: trainDataset.backgroundColor,
+      };
+
+    const intervalMS = endTimeMS - startTimeMS;
+
+    let repeatedData: XY[] = [];
+    for (let i = 0; i < trainDataset.repeat; i++) {
+      repeatedData.push(
+        ...data.map((xY) => {
+          const newX = new Date(xY.x);
+          newX.setMilliseconds(intervalMS * i);
+
+          return {
+            x: newX,
+            y: xY.y,
+          };
+        })
+      );
+    }
+
+    return {
+      label: trainDataset.train, // @ts-ignore
+      data: repeatedData,
+      borderColor: trainDataset.borderColor,
+      backgroundColor: trainDataset.backgroundColor,
+    };
+  });
 
 type Props = {
-  options: ChartOptions<"scatter">;
-  data: ChartData<"scatter">;
+  stations: string[];
+  trainDatasets: TrainDataset[];
 };
 
-const ChartSection = ({ options, data }: Props) => {
+const ChartSection = ({ stations, trainDatasets }: Props) => {
   const [height, setHeight] = useState<number>(50);
+
+  const options: ChartOptions<"scatter"> = {
+    scales: {
+      x: {
+        type: "time",
+        time: {
+          unit: "hour",
+          stepSize: 1,
+          displayFormats: {
+            hour: "HH:mm",
+          },
+        },
+      },
+      y: {
+        type: "category",
+        labels: stations,
+      },
+    },
+    showLine: true,
+    elements: {
+      point: {
+        radius: 0,
+      },
+    },
+    maintainAspectRatio: false,
+  };
+
+  const data: ChartData<"scatter"> = {
+    datasets: trainDatasetsToChartDatasets(trainDatasets),
+  };
 
   return (
     <section className="mx-4 my-8 flex flex-col gap-2">
