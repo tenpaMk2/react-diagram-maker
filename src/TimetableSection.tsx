@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { TrainDataset, XYKey } from "./TimeInputsEachTrain";
 
 const extrudeXYKeysOnlyDeparture = (xYKeys: XYKey[]) =>
@@ -17,43 +16,44 @@ const TimetableSection = ({ trainDatasets }: Props) => {
     .map((xYKey) => xYKey.key)
     .slice(0, -1); // skip last because the up and first station is invalid.
 
-  const baseDatas: {
+  const validTrainDatasets = trainDatasets.filter(
+    (trainDataset) => trainDataset.data.length !== 0
+  );
+
+  type BaseData = {
     key: string;
     date: Date;
     color: string;
     repeat: number;
-  }[] = [];
-  trainDatasets.forEach((trainDataset) => {
-    if (trainDataset.data.length === 0) return;
+  };
+  const baseDatas = ([] as BaseData[]).concat(
+    ...validTrainDatasets.map((trainDataset) => {
+      const candidateIntervalMS =
+        trainDataset.data[trainDataset.data.length - 1].x.getTime() -
+        trainDataset.data[0].x.getTime();
 
-    const candidateIntervalMS =
-      trainDataset.data[trainDataset.data.length - 1].x.getTime() -
-      trainDataset.data[0].x.getTime();
+      const intervalMS = Number.isNaN(candidateIntervalMS)
+        ? 0
+        : candidateIntervalMS;
+      const repeat = Number.isNaN(intervalMS) ? 1 : trainDataset.repeat;
 
-    const intervalMS = Number.isNaN(candidateIntervalMS)
-      ? 0
-      : candidateIntervalMS;
-    const repeat = Number.isNaN(intervalMS) ? 1 : trainDataset.repeat;
+      return ([] as BaseData[]).concat(
+        ...trainDataset.data.map((xYKey) =>
+          [...Array(repeat).keys()].map((i) => {
+            const newDate = new Date(xYKey.x);
+            newDate.setMilliseconds(intervalMS * i);
 
-    trainDataset.data.forEach((xYKey, idx) => {
-      for (let i = 0; i < repeat; i++) {
-        const newDate = new Date(xYKey.x);
-        newDate.setMilliseconds(intervalMS * i);
-
-        if (idx === trainDataset.data.length - 1 && i === repeat - 1) {
-          // skip last time
-          continue;
-        }
-
-        baseDatas.push({
-          key: xYKey.key,
-          date: newDate,
-          color: trainDataset.borderColor,
-          repeat: trainDataset.repeat,
-        });
-      }
-    });
-  });
+            return {
+              key: xYKey.key,
+              date: newDate,
+              color: trainDataset.borderColor,
+              repeat: trainDataset.repeat,
+            };
+          })
+        )
+      );
+    })
+  );
 
   const timetables = departureStations.map((departureStation) => {
     const eachDepartureDatas = baseDatas
@@ -64,25 +64,21 @@ const TimetableSection = ({ trainDatasets }: Props) => {
         repeat: data.repeat,
       }));
 
-    const hourAndMinutes: ReactNode[][] = [];
-    for (let hour = 0; hour < 24; hour++) {
+    const hourAndMinutes = [...Array(24).keys()].map((hour) => {
       type MinuteAndColors = { minute: number; color: string };
-      const minuteAndColors: MinuteAndColors[] = [];
       const hourDatas = eachDepartureDatas.filter(
         (data) => data.date.getHours() === hour
       );
 
-      hourDatas.forEach((hourData) => {
-        minuteAndColors.push({
-          minute: hourData.date.getMinutes(),
-          color: hourData.color,
-        });
-      });
+      const minuteAndColors = hourDatas.map((hourData) => ({
+        minute: hourData.date.getMinutes(),
+        color: hourData.color,
+      }));
       minuteAndColors.sort(
         (a: MinuteAndColors, b: MinuteAndColors) => a.minute - b.minute
       );
 
-      hourAndMinutes[hour] = [
+      return [
         <div
           key={`time:${hour}`}
           className="flex items-center justify-center border bg-blue-700 p-2 text-white"
@@ -106,7 +102,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
           ))}
         </div>,
       ];
-    }
+    });
 
     return (
       <section
