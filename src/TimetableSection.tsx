@@ -66,7 +66,8 @@ const TimetableSection = ({ trainDatasets }: Props) => {
 
     const hourAndMinutes: ReactNode[][] = [];
     for (let hour = 0; hour < 24; hour++) {
-      const minuteAndColors: { minute: number; color: string }[] = [];
+      type MinuteAndColors = { minute: number; color: string };
+      const minuteAndColors: MinuteAndColors[] = [];
       const hourDatas = eachDepartureDatas.filter(
         (data) => data.date.getHours() === hour
       );
@@ -77,6 +78,9 @@ const TimetableSection = ({ trainDatasets }: Props) => {
           color: hourData.color,
         });
       });
+      minuteAndColors.sort(
+        (a: MinuteAndColors, b: MinuteAndColors) => a.minute - b.minute
+      );
 
       hourAndMinutes[hour] = [
         <div
