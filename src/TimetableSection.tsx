@@ -20,13 +20,13 @@ const TimetableSection = ({ trainDatasets }: Props) => {
     (trainDataset) => trainDataset.data.length !== 0
   );
 
-  type BaseData = {
+  type FlattenedData = {
     key: string;
     date: Date;
     color: string;
     repeat: number;
   };
-  const baseDatas = ([] as BaseData[]).concat(
+  const flattenedDatas = ([] as FlattenedData[]).concat(
     ...validTrainDatasets.map((trainDataset) => {
       const candidateIntervalMS =
         trainDataset.data[trainDataset.data.length - 1].x.getTime() -
@@ -37,7 +37,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
         : candidateIntervalMS;
       const repeat = Number.isNaN(intervalMS) ? 1 : trainDataset.repeat;
 
-      return ([] as BaseData[]).concat(
+      return ([] as FlattenedData[]).concat(
         ...trainDataset.data.map((xYKey) =>
           [...Array(repeat).keys()].map((i) => {
             const newDate = new Date(xYKey.x);
@@ -56,7 +56,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
   );
 
   const timetables = departureStations.map((departureStation) => {
-    const eachDepartureDatas = baseDatas
+    const eachDepartureDatas = flattenedDatas
       .filter((baseData) => baseData.key === departureStation)
       .map((data) => ({
         color: data.color,
