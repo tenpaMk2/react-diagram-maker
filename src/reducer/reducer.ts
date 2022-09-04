@@ -118,8 +118,10 @@ export const reducer = (
           key: timeInputslabel,
           isPass: false,
         })),
-        borderColor: colors[prevTrainDatasets.length].borderColor, // todo: limit length
-        backgroundColor: colors[prevTrainDatasets.length].backgroundColor,
+        borderColor:
+          colors[prevTrainDatasets.length % colors.length].borderColor, // todo: limit length
+        backgroundColor:
+          colors[prevTrainDatasets.length % colors.length].backgroundColor,
         repeat: 1,
         isMoveForward: false,
       };
