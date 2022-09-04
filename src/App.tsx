@@ -41,12 +41,12 @@ const colors = [
     backgroundColor: "rgba(54,162,235,0.5)",
   },
   {
-    borderColor: "rgb(a153,102,255,1)",
-    backgroundColor: "rgb(a153,102,255,0.5)",
+    borderColor: "rgba(153,102,255,1)",
+    backgroundColor: "rgb(153,102,255,0.5)",
   },
   {
-    borderColor: "rgba(201,203,20,17",
-    backgroundColor: "rgba(201,203,20,0.57",
+    borderColor: "rgba(201,203,207,1)",
+    backgroundColor: "rgba(201,203,207,0.5)",
   },
 ];
 
