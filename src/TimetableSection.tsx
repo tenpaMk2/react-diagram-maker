@@ -26,10 +26,13 @@ const TimetableSection = ({ trainDatasets }: Props) => {
   trainDatasets.forEach((trainDataset) => {
     if (trainDataset.data.length === 0) return;
 
-    const intervalMS =
+    const candidateIntervalMS =
       trainDataset.data[trainDataset.data.length - 1].x.getTime() -
       trainDataset.data[0].x.getTime();
 
+    const intervalMS = Number.isNaN(candidateIntervalMS)
+      ? 0
+      : candidateIntervalMS;
     const repeat = Number.isNaN(intervalMS) ? 1 : trainDataset.repeat;
 
     trainDataset.data.forEach((xYKey, idx) => {
