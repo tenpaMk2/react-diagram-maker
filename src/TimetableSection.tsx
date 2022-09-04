@@ -4,14 +4,6 @@ import { TrainDataset, XYKey } from "./TimeInputsEachTrain";
 const extrudeXYKeysOnlyDeparture = (xYKeys: XYKey[]) =>
   xYKeys.filter((xYKey) => xYKey.key.match(/発$/g));
 
-const rGBAToRGB = (rGBA: string) =>
-  rGBA.replace(/,\d+(?:\.\d+)?\)$/g, "").replace("rgba", "rgb") + ")";
-
-const rGBAToA = (rGBA: string) => {
-  const result = rGBA.match(/,\d+(?:\.\d+)?\)$/g);
-  return result?.length === 1 ? result[0].slice(1, -1) : null;
-};
-
 type Props = {
   trainDatasets: TrainDataset[];
 };
@@ -92,9 +84,8 @@ const TimetableSection = ({ trainDatasets }: Props) => {
           {minuteAndColors.map((minuteAndColor) => (
             <p
               key={`${minuteAndColor.minute}${minuteAndColor.color}`}
-              className={`p-2 font-bold text-[${rGBAToRGB(
-                minuteAndColor.color
-              )}]/[${rGBAToA(minuteAndColor.color)}]`}
+              className={"p-2 font-bold"}
+              style={{ color: minuteAndColor.color }}
             >
               {String(minuteAndColor.minute).padStart(2, "0")}
             </p>
