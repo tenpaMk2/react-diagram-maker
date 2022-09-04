@@ -22,6 +22,8 @@ const TimetableSection = ({ trainDatasets }: Props) => {
     repeat: number;
   }[] = [];
   trainDatasets.forEach((trainDataset) => {
+    if (trainDataset.data.length === 0) return;
+
     const intervalMS =
       trainDataset.data[trainDataset.data.length - 1].x.getTime() -
       trainDataset.data[0].x.getTime();
