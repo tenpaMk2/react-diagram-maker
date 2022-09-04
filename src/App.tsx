@@ -8,13 +8,10 @@ import {
 import "chartjs-adapter-moment";
 import { useReducer, useState } from "react";
 import StationSection from "./StationSection";
-import TimeInputsSection, {
-  stationsToDownAndUpStations,
-  stationsToTimeInputsLabels,
-} from "./TimeInputsSection";
+import TimeInputsSection from "./TimeInputsSection";
 import ChartSection from "./ChartSection";
 import Footer from "./Footer";
-import { TrainDataset, XYKey } from "./TimeInputsEachTrain";
+import { TrainDataset } from "./TimeInputsEachTrain";
 import TimetableSection from "./TimetableSection";
 import { reducer } from "./reducer/reducer";
 
