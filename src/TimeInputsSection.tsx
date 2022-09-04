@@ -42,10 +42,11 @@ const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
 
   const timeInputsLabels = stationsToTimeInputsLabels(stations);
 
-  const tempStyleForBug = {
+  const gridTemplateRowsStyle = {
     gridTemplateRows: `repeat(${
       timeInputsLabels.length + 3
     }, minmax(min-content, max-content)`,
+    gridTemplateColumns: "max-content",
   };
 
   return (
@@ -73,8 +74,8 @@ const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
       />
 
       <div
-        className={`grid grid-flow-col auto-rows-min items-baseline gap-x-4 gap-y-2 rounded-xl bg-white p-4`}
-        style={tempStyleForBug}
+        className={`items-strech grid grid-flow-col gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4`}
+        style={gridTemplateRowsStyle}
       >
         <TimeInputsStationsAndOthers timeInputsStations={timeInputsLabels} />
 
