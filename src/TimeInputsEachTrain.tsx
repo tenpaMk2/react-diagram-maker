@@ -1,4 +1,6 @@
+import { Dispatch } from "react";
 import IsMoveForward from "./IsMoveForward";
+import { Actions } from "./reducer/reducer";
 import RepeatInput from "./RepeatInput";
 import TimeInput from "./TimeInput";
 
@@ -25,35 +27,56 @@ const inputValueToDate = (inputValue: string) =>
 
 type Props = {
   trainDataset: TrainDataset;
-  onIsMoveForwardChange: (trainName: string, isMoveForward: boolean) => void;
-  onRepeatChange: (trainName: string, repeat: number) => void;
-  onTimeChange: (trainName: string, key: string, time: Date) => void;
-  onIsPassChange: (trainName: string, key: string, isPass: boolean) => void;
+  dispatch: Dispatch<Actions>;
 };
 
-const TimeListEachTrain = ({
-  trainDataset,
-  onIsMoveForwardChange,
-  onRepeatChange,
-  onTimeChange,
-  onIsPassChange,
-}: Props) => {
+const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
+  const onRepeatChange = (repeat: number) => {
+    dispatch({
+      type: "changeRepeat",
+      payload: { train: trainDataset.train, repeat: repeat },
+    });
+  };
+
+  const onIsMoveForwardChange = (isMoveForward: boolean) => {
+    dispatch({
+      type: "changeIsMoveForward",
+      payload: { train: trainDataset.train, isMoveForward: isMoveForward },
+    });
+  };
+
+  const onTimeChange = (key: string, inputValue: string) => {
+    dispatch({
+      type: "changeTime",
+      payload: {
+        train: trainDataset.train,
+        key: key,
+        time: inputValueToDate(inputValue),
+      },
+    });
+  };
+
+  const onIsPassChange = (key: string, isPass: boolean) => {
+    dispatch({
+      type: "changeIsPass",
+      payload: {
+        train: trainDataset.train,
+        key: key,
+        isPass: isPass,
+      },
+    });
+  };
+
   return (
     <>
       <h3 className="text-center text-xl">{trainDataset.train}</h3>
 
       {trainDataset.data.length ? (
         <>
-          <IsMoveForward
-            onIsMoveForwardChange={(is: boolean) =>
-              onIsMoveForwardChange(trainDataset.train, is)
-            }
-          />
+          <IsMoveForward onIsMoveForwardChange={onIsMoveForwardChange} />
           <RepeatInput
             value={trainDataset.repeat}
-            onRepeatChange={(repeat: number) =>
-              onRepeatChange(trainDataset.train, repeat)
-            }
+            onRepeatChange={onRepeatChange}
           />
         </>
       ) : (
@@ -68,11 +91,11 @@ const TimeListEachTrain = ({
           key={xYKey.key}
           value={dateToInputValue(xYKey.x)}
           isPass={xYKey.isPass}
-          onTimeChange={(time: string) => {
-            onTimeChange(trainDataset.train, xYKey.key, inputValueToDate(time));
+          onTimeChange={(inputValue: string) => {
+            onTimeChange(xYKey.key, inputValue);
           }}
           onIsPassChange={(isPass: boolean) =>
-            onIsPassChange(trainDataset.train, xYKey.key, isPass)
+            onIsPassChange(xYKey.key, isPass)
           }
         />
       ))}

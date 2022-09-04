@@ -1,4 +1,5 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, Dispatch, KeyboardEvent, useState } from "react";
+import { Actions } from "./reducer/reducer";
 import TimeListEachTrain, { TrainDataset } from "./TimeInputsEachTrain";
 import TimeInputsStationsAndOthers from "./TimeInputsStationsAndOthers";
 
@@ -33,22 +34,10 @@ export const stationsToTimeInputsLabels = (stations: string[]): string[] => {
 type Props = {
   stations: string[];
   trainDatasets: TrainDataset[];
-  addTrain: (trainName: string) => void;
-  onIsMoveForwardChange: (trainName: string, isMoveForward: boolean) => void;
-  onRepeatChange: (trainName: string, repeat: number) => void;
-  onTimeChange: (trainName: string, key: string, time: Date) => void;
-  onIsPassChange: (trainName: string, key: string, isPass: boolean) => void;
+  dispatch: Dispatch<Actions>;
 };
 
-const TimeInputsSection = ({
-  stations,
-  trainDatasets,
-  addTrain,
-  onIsMoveForwardChange,
-  onRepeatChange,
-  onTimeChange,
-  onIsPassChange,
-}: Props) => {
+const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
   const [trainText, setTrainText] = useState<string>("");
 
   const timeInputsLabels = stationsToTimeInputsLabels(stations);
@@ -75,7 +64,10 @@ const TimeInputsSection = ({
           if (e.key !== "Enter") return;
           if (!trainText.match(/\S/g)) return;
 
-          addTrain(trainText);
+          dispatch({
+            type: "addTrain",
+            payload: { train: trainText, stations: stations },
+          });
           setTrainText("");
         }}
       />
@@ -90,10 +82,7 @@ const TimeInputsSection = ({
           <TimeListEachTrain
             key={trainDataset.train}
             trainDataset={trainDataset}
-            onIsMoveForwardChange={onIsMoveForwardChange}
-            onRepeatChange={onRepeatChange}
-            onTimeChange={onTimeChange}
-            onIsPassChange={onIsPassChange}
+            dispatch={dispatch}
           />
         ))}
       </div>

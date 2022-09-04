@@ -6,7 +6,7 @@ import {
   registerables,
 } from "chart.js";
 import "chartjs-adapter-moment";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import StationSection from "./StationSection";
 import TimeInputsSection, {
   stationsToDownAndUpStations,
@@ -16,39 +16,9 @@ import ChartSection from "./ChartSection";
 import Footer from "./Footer";
 import { TrainDataset, XYKey } from "./TimeInputsEachTrain";
 import TimetableSection from "./TimetableSection";
+import { reducer } from "./reducer/reducer";
 
 ChartJS.register(...registerables);
-
-const colors = [
-  {
-    borderColor: "rgba(255,99,132,1)", // Never use space because of tailwind's restriction
-    backgroundColor: "rgba(255,99,132,0.5)",
-  },
-  {
-    borderColor: "rgba(255,159,64,1)",
-    backgroundColor: "rgba(255,159,64,0.5)",
-  },
-  {
-    borderColor: "rgba(255,205,86,1)",
-    backgroundColor: "rgba(255,205,86,0.5)",
-  },
-  {
-    borderColor: "rgba(75,192,192,1)",
-    backgroundColor: "rgba(75,192,192,0.5)",
-  },
-  {
-    borderColor: "rgba(54,162,235,1)",
-    backgroundColor: "rgba(54,162,235,0.5)",
-  },
-  {
-    borderColor: "rgba(153,102,255,1)",
-    backgroundColor: "rgb(153,102,255,0.5)",
-  },
-  {
-    borderColor: "rgba(201,203,207,1)",
-    backgroundColor: "rgba(201,203,207,0.5)",
-  },
-];
 
 const trainDatasetsToChartDatasets = (
   trainDatasets: TrainDataset[]
@@ -114,44 +84,7 @@ const trainDatasetsToChartDatasets = (
 
 const App = () => {
   const [stations, setStations] = useState<string[]>([]);
-  const [trainDatasets, setTrainDatasets] = useState<TrainDataset[]>([]);
-
-  const onChangeStations = (stations: string[]) => {
-    setTrainDatasets((prev) => {
-      const downAndUpStations = stationsToDownAndUpStations(stations);
-      const timeInputsLabels = stationsToTimeInputsLabels(stations);
-
-      const newTrainDatasets = prev.map((prevTrainDataset) => {
-        const prevTimeInputsLabels = prevTrainDataset.data.map(
-          (xYKey) => xYKey.key
-        );
-
-        if (
-          JSON.stringify(prevTimeInputsLabels) ===
-          JSON.stringify(timeInputsLabels)
-        )
-          return prevTrainDataset;
-
-        const blankXYKeys: XYKey[] = timeInputsLabels.map((label, idx) => ({
-          x: new Date("invalid"),
-          y: downAndUpStations[idx],
-          key: label,
-          isPass: false,
-        }));
-
-        const newData = blankXYKeys.map((blankXYKey) => {
-          const searchResult = prevTrainDataset.data.filter(
-            (xykey) => xykey.key === blankXYKey.key
-          );
-          return searchResult.length === 1 ? searchResult[0] : blankXYKey;
-        });
-
-        return { ...prevTrainDataset, data: newData };
-      });
-
-      return newTrainDatasets;
-    });
-  };
+  const [trainDatasets, dispatch] = useReducer(reducer, []);
 
   const options: ChartOptions<"scatter"> = {
     scales: {
@@ -188,7 +121,7 @@ const App = () => {
       const newStations = [...prevStations];
       newStations.push(newStationName);
 
-      onChangeStations(newStations);
+      dispatch({ type: "changeStations", payload: { stations: newStations } });
       return newStations;
     });
   };
@@ -199,160 +132,8 @@ const App = () => {
         (prevStationName) => prevStationName !== stationName
       );
 
-      onChangeStations(newStations);
+      dispatch({ type: "changeStations", payload: { stations: newStations } });
       return newStations;
-    });
-  };
-
-  const addTrain = (trainName: string) => {
-    setTrainDatasets((prev) => {
-      const filtered = prev.filter(
-        (prevTrainDataset) => prevTrainDataset.train === trainName
-      );
-      if (0 < filtered.length) {
-        // TODO: alert existed train name.
-        return prev;
-      }
-
-      const downAndUpStations = stationsToDownAndUpStations(stations);
-      const timeInputsLabels = stationsToTimeInputsLabels(stations);
-
-      const initialTrainDataset: TrainDataset = {
-        train: trainName,
-        data: timeInputsLabels.map((timeInputslabel, idx) => ({
-          x: new Date("invalid"),
-          y: downAndUpStations[idx],
-          key: timeInputslabel,
-          isPass: false,
-        })),
-        borderColor: colors[prev.length].borderColor, // todo: limit length
-        backgroundColor: colors[prev.length].backgroundColor,
-        repeat: 1,
-        isMoveForward: false,
-      };
-
-      return [...prev, initialTrainDataset];
-    });
-  };
-
-  const onIsMoveForwardChange = (trainName: string, isMoveForward: boolean) => {
-    setTrainDatasets((prev) => {
-      const trains = prev.map((prevTrainDataset) => prevTrainDataset.train);
-      const idx = trains.indexOf(trainName);
-      if (idx === -1) return prev; // TODO: error invalid trainName
-
-      const newTrainDatasets = [...prev];
-      newTrainDatasets[idx].isMoveForward = isMoveForward;
-
-      return newTrainDatasets;
-    });
-  };
-
-  const onRepeatChange = (trainName: string, repeat: number) => {
-    setTrainDatasets((prev) => {
-      const trains = prev.map((prevTrainDataset) => prevTrainDataset.train);
-      const idx = trains.indexOf(trainName);
-      if (idx === -1) return prev; // TODO: error invalid trainName
-
-      const newTrainDatasets = [...prev];
-      newTrainDatasets[idx].repeat = repeat;
-
-      return newTrainDatasets;
-    });
-  };
-
-  const onTimeChange = (trainName: string, key: string, time: Date) => {
-    setTrainDatasets((prev) => {
-      const trains = prev.map((prevTrainDataset) => prevTrainDataset.train);
-      const trainIdx = trains.indexOf(trainName);
-      if (trainIdx === -1) {
-        // TODO: error invalid trainName;
-        return prev;
-      }
-      const prevTrainDataset = prev[trainIdx];
-
-      const keys = prevTrainDataset.data.map((xYKey) => xYKey.key);
-      const dataIdx = keys.indexOf(key);
-      if (dataIdx === -1) {
-        // TODO: error invalid key;
-        return prev;
-      }
-
-      const diffMS =
-        time.getTime() - prevTrainDataset.data[dataIdx].x.getTime();
-
-      if (!prevTrainDataset.isMoveForward || Number.isNaN(diffMS)) {
-        const newXYKey = {
-          ...prevTrainDataset.data[dataIdx],
-          key: key,
-          x: time,
-        };
-        const newData = [...prevTrainDataset.data];
-        newData[dataIdx] = newXYKey;
-
-        const newTrainDataset = { ...prevTrainDataset, data: newData };
-
-        const newTrainDatasets = [...prev];
-        newTrainDatasets[trainIdx] = newTrainDataset;
-
-        return newTrainDatasets;
-      }
-
-      const newData = [...prevTrainDataset.data];
-      for (let idx = dataIdx; idx < newData.length; idx++) {
-        const prevTime = prevTrainDataset.data[idx].x;
-        if (Number.isNaN(prevTime.getTime())) continue;
-
-        prevTime.setMilliseconds(diffMS);
-        newData[idx] = {
-          x: prevTime,
-          y: prevTrainDataset.data[idx].y,
-          key: prevTrainDataset.data[idx].key,
-          isPass: prevTrainDataset.data[idx].isPass,
-        };
-      }
-
-      const newTrainDataset = { ...prevTrainDataset, data: newData };
-
-      const newTrainDatasets = [...prev];
-      newTrainDatasets[trainIdx] = newTrainDataset;
-
-      return newTrainDatasets;
-    });
-  };
-
-  const onIsPassChange = (trainName: string, key: string, isPass: boolean) => {
-    setTrainDatasets((prev) => {
-      const trains = prev.map((prevTrainDataset) => prevTrainDataset.train);
-      const trainIdx = trains.indexOf(trainName);
-      if (trainIdx === -1) {
-        // TODO: error invalid trainName;
-        return prev;
-      }
-      const prevTrainDataset = prev[trainIdx];
-
-      const keys = prevTrainDataset.data.map((xYKey) => xYKey.key);
-      const dataIdx = keys.indexOf(key);
-      if (dataIdx === -1) {
-        // TODO: error invalid key;
-        return prev;
-      }
-
-      const newXYKey = {
-        ...prevTrainDataset.data[dataIdx],
-        key: key,
-        isPass: isPass,
-      };
-
-      const newData = [...prevTrainDataset.data];
-      newData[dataIdx] = newXYKey;
-
-      const newTrainDataset = { ...prevTrainDataset, data: newData };
-
-      const newTrainDatasets = [...prev];
-      newTrainDatasets[trainIdx] = newTrainDataset;
-
-      return newTrainDatasets;
     });
   };
 
@@ -371,11 +152,7 @@ const App = () => {
       <TimeInputsSection
         stations={stations}
         trainDatasets={trainDatasets}
-        addTrain={addTrain}
-        onIsMoveForwardChange={onIsMoveForwardChange}
-        onRepeatChange={onRepeatChange}
-        onTimeChange={onTimeChange}
-        onIsPassChange={onIsPassChange}
+        dispatch={dispatch}
       />
 
       <ChartSection options={options} data={data} />
