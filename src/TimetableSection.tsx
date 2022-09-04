@@ -72,8 +72,11 @@ const TimetableSection = ({ trainDatasets }: Props) => {
       });
 
       hourAndMinutes[hour] = [
-        <div className="flex items-center justify-center border bg-blue-700 p-2 text-white">
-          <time key={`time:${hour}`}>{hour}</time>
+        <div
+          key={`time:${hour}`}
+          className="flex items-center justify-center border bg-blue-700 p-2 text-white"
+        >
+          <time>{hour}</time>
         </div>,
         <div
           key={`div:${hour}`}
