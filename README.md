@@ -9,6 +9,7 @@ Techs:
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Chart.js](https://www.chartjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
 
 ## live demo
 
