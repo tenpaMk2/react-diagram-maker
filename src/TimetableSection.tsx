@@ -26,6 +26,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
     date: Date;
     color: string;
     repeat: number;
+    train: string;
   };
   const flattenedDatas = ([] as FlattenedData[]).concat(
     ...validTrainDatasets.map((trainDataset) => {
@@ -36,7 +37,8 @@ const TimetableSection = ({ trainDatasets }: Props) => {
       const intervalMS = Number.isNaN(candidateIntervalMS)
         ? 0
         : candidateIntervalMS;
-      const repeat = Number.isNaN(intervalMS) ? 1 : trainDataset.repeat;
+      // const repeat = Number.isNaN(intervalMS) ? 1 : trainDataset.repeat;
+      const repeat = intervalMS ? 1 : trainDataset.repeat;
 
       return ([] as FlattenedData[]).concat(
         ...trainDataset.data.map((xYKey) =>
@@ -49,6 +51,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
               date: newDate,
               color: colorToRGBA(trainDataset.color),
               repeat: trainDataset.repeat,
+              train: trainDataset.train,
             };
           })
         )
@@ -63,6 +66,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
         color: data.color,
         date: data.date,
         repeat: data.repeat,
+        train: data.train,
       }));
 
     const hourAndMinutes = [...Array(24).keys()].map((hour) => {
@@ -74,6 +78,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
       const minuteAndColors = hourDatas.map((hourData) => ({
         minute: hourData.date.getMinutes(),
         color: hourData.color,
+        train: hourData.train,
       }));
       minuteAndColors.sort(
         (a: MinuteAndColors, b: MinuteAndColors) => a.minute - b.minute
@@ -94,7 +99,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
         >
           {minuteAndColors.map((minuteAndColor) => (
             <p
-              key={`${minuteAndColor.minute}${minuteAndColor.color}`}
+              key={`${minuteAndColor.train}${minuteAndColor.minute}`}
               className={"p-2 font-bold"}
               style={{ color: minuteAndColor.color }}
             >
