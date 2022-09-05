@@ -132,7 +132,20 @@ const ChartSection = ({ stations, trainDatasets }: Props) => {
         <Scatter
           options={options}
           data={data}
-          className="rounded-xl bg-white"
+          plugins={[
+            {
+              id: "custom_canvas_background_color",
+              beforeDraw: (chart: any) => {
+                const { ctx } = chart;
+                ctx.save();
+                ctx.globalCompositeOperation = "destination-over";
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, chart.width, chart.height);
+                ctx.restore();
+              },
+            },
+          ]}
+          className="rounded-xl"
         />
       </div>
     </section>
