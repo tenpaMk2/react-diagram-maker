@@ -25,7 +25,6 @@ const TimetableSection = ({ trainDatasets }: Props) => {
     key: string;
     date: Date;
     color: string;
-    repeat: number;
     train: string;
   };
   const flattenedDatas = ([] as FlattenedData[]).concat(
@@ -37,8 +36,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
       const intervalMS = Number.isNaN(candidateIntervalMS)
         ? 0
         : candidateIntervalMS;
-      // const repeat = Number.isNaN(intervalMS) ? 1 : trainDataset.repeat;
-      const repeat = intervalMS ? 1 : trainDataset.repeat;
+      const repeat = intervalMS ? trainDataset.repeat : 1;
 
       return ([] as FlattenedData[]).concat(
         ...trainDataset.data.map((xYKey) =>
@@ -50,7 +48,6 @@ const TimetableSection = ({ trainDatasets }: Props) => {
               key: xYKey.key,
               date: newDate,
               color: colorToRGBA(trainDataset.color),
-              repeat: trainDataset.repeat,
               train: trainDataset.train,
             };
           })
@@ -65,7 +62,6 @@ const TimetableSection = ({ trainDatasets }: Props) => {
       .map((data) => ({
         color: data.color,
         date: data.date,
-        repeat: data.repeat,
         train: data.train,
       }));
 
