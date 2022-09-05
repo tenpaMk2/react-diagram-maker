@@ -5,6 +5,7 @@ import ChartSection from "./ChartSection";
 import Footer from "./Footer";
 import TimetableSection from "./TimetableSection";
 import { reducer } from "./reducer/reducer";
+import RouteMapSection from "./RouteMapSection";
 
 const App = () => {
   const [stations, setStations] = useState<string[]>([]);
@@ -52,6 +53,8 @@ const App = () => {
       <ChartSection stations={stations} trainDatasets={trainDatasets} />
 
       <TimetableSection trainDatasets={trainDatasets} />
+
+      <RouteMapSection stations={stations} trainDatasets={trainDatasets} />
 
       <Footer />
     </div>
