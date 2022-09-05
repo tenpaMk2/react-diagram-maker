@@ -44,7 +44,7 @@ const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
 
   const gridTemplateRowsStyle = {
     gridTemplateRows: `repeat(${
-      timeInputsLabels.length + 3
+      timeInputsLabels.length + 4
     }, minmax(min-content, max-content)`,
     gridTemplateColumns: "max-content",
   };

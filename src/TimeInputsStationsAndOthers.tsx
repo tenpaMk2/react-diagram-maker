@@ -6,6 +6,9 @@ const TimeInputsStationsAndOthers = ({ timeInputsStations }: Props) => (
       <>
         <div className="sticky left-0 h-full border-r-2 bg-white px-2 text-right"></div>
         <div className="sticky left-0 h-full border-r-2 bg-white px-2 text-right">
+          色
+        </div>
+        <div className="sticky left-0 h-full border-r-2 bg-white px-2 text-right">
           連動繰り上げ
         </div>
         <div className="sticky left-0 h-full border-r-2 bg-white px-2 text-right">
@@ -16,7 +19,7 @@ const TimeInputsStationsAndOthers = ({ timeInputsStations }: Props) => (
     {timeInputsStations.map((key) => (
       <div
         key={key}
-        className="sticky left-0 h-full border-r-2 bg-white px-2 text-right even:pb-8"
+        className="sticky left-0 h-full border-r-2 bg-white px-2 text-right odd:pb-8"
       >
         {key}
       </div>

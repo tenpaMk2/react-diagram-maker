@@ -1,3 +1,4 @@
+import { colorToRGBA } from "./lib/Color";
 import { TrainDataset, XYKey } from "./TimeInputsEachTrain";
 
 const extrudeXYKeysOnlyDeparture = (xYKeys: XYKey[]) =>
@@ -46,7 +47,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
             return {
               key: xYKey.key,
               date: newDate,
-              color: trainDataset.borderColor,
+              color: colorToRGBA(trainDataset.color),
               repeat: trainDataset.repeat,
             };
           })

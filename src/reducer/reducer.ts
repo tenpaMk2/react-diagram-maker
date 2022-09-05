@@ -1,39 +1,9 @@
+import { Color, RGBColor } from "react-color";
 import { TrainDataset, XYKey } from "../TimeInputsEachTrain";
 import {
   stationsToDownAndUpStations,
   stationsToTimeInputsLabels,
 } from "../TimeInputsSection";
-
-const colors = [
-  {
-    borderColor: "rgba(255,99,132,1)", // Never use space because of tailwind's restriction
-    backgroundColor: "rgba(255,99,132,0.5)",
-  },
-  {
-    borderColor: "rgba(255,159,64,1)",
-    backgroundColor: "rgba(255,159,64,0.5)",
-  },
-  {
-    borderColor: "rgba(255,205,86,1)",
-    backgroundColor: "rgba(255,205,86,0.5)",
-  },
-  {
-    borderColor: "rgba(75,192,192,1)",
-    backgroundColor: "rgba(75,192,192,0.5)",
-  },
-  {
-    borderColor: "rgba(54,162,235,1)",
-    backgroundColor: "rgba(54,162,235,0.5)",
-  },
-  {
-    borderColor: "rgba(153,102,255,1)",
-    backgroundColor: "rgb(153,102,255,0.5)",
-  },
-  {
-    borderColor: "rgba(201,203,207,1)",
-    backgroundColor: "rgba(201,203,207,0.5)",
-  },
-];
 
 export type Actions =
   | { type: "changeStations"; payload: { stations: string[] } }
@@ -51,6 +21,10 @@ export type Actions =
   | {
       type: "changeIsMoveForward";
       payload: { train: string; isMoveForward: boolean };
+    }
+  | {
+      type: "changeColor";
+      payload: { train: string; color: RGBColor };
     };
 
 export const reducer = (
@@ -119,10 +93,7 @@ export const reducer = (
           key: timeInputslabel,
           isPass: false,
         })),
-        borderColor:
-          colors[prevTrainDatasets.length % colors.length].borderColor, // todo: limit length
-        backgroundColor:
-          colors[prevTrainDatasets.length % colors.length].backgroundColor,
+        color: { r: 0, g: 0, b: 0, a: 1 },
         repeat: 1,
         isMoveForward: false,
       };
@@ -251,6 +222,28 @@ export const reducer = (
       newData[dataIdx] = newXYKey;
 
       const newTrainDataset = { ...prevTrainDataset, data: newData };
+
+      const newTrainDatasets = [...prevTrainDatasets];
+      newTrainDatasets[trainIdx] = newTrainDataset;
+
+      return newTrainDatasets;
+    }
+
+    case "changeColor": {
+      const trains = prevTrainDatasets.map(
+        (prevTrainDataset) => prevTrainDataset.train
+      );
+      const trainIdx = trains.indexOf(action.payload.train);
+      if (trainIdx === -1) {
+        // TODO: error invalid trainName;
+        return prevTrainDatasets;
+      }
+      const prevTrainDataset = prevTrainDatasets[trainIdx];
+
+      const newTrainDataset = {
+        ...prevTrainDataset,
+        color: action.payload.color,
+      };
 
       const newTrainDatasets = [...prevTrainDatasets];
       newTrainDatasets[trainIdx] = newTrainDataset;
