@@ -3,6 +3,7 @@ import IsMoveForward from "./IsMoveForward";
 import { Actions } from "./reducer/reducer";
 import RepeatInput from "./RepeatInput";
 import TimeInput from "./TimeInput";
+import TrashButton from "./TrashButton";
 
 export type XYKey = { x: Date; y: string; key: string; isPass: boolean };
 
@@ -67,9 +68,21 @@ const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
     });
   };
 
+  const removeTrain = () => {
+    dispatch({
+      type: "removeTrain",
+      payload: {
+        train: trainDataset.train,
+      },
+    });
+  };
+
   return (
     <>
-      <h3 className="text-center text-xl">{trainDataset.train}</h3>
+      <div className="flex items-center justify-center gap-4 py-4 text-2xl">
+        <h3>{trainDataset.train}</h3>
+        <TrashButton onClick={removeTrain} />
+      </div>
 
       {trainDataset.data.length ? (
         <>

@@ -74,7 +74,7 @@ const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
       />
 
       <div
-        className={`items-strech grid grid-flow-col gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4`}
+        className={`grid grid-flow-col items-baseline gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4`}
         style={gridTemplateRowsStyle}
       >
         <TimeInputsStationsAndOthers timeInputsStations={timeInputsLabels} />

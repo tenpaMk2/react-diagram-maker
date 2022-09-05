@@ -38,6 +38,7 @@ const colors = [
 export type Actions =
   | { type: "changeStations"; payload: { stations: string[] } }
   | { type: "addTrain"; payload: { train: string; stations: string[] } }
+  | { type: "removeTrain"; payload: { train: string } }
   | { type: "changeRepeat"; payload: { train: string; repeat: number } }
   | {
       type: "changeTime";
@@ -127,6 +128,12 @@ export const reducer = (
       };
 
       return [...prevTrainDatasets, initialTrainDataset];
+    }
+
+    case "removeTrain": {
+      return prevTrainDatasets.filter(
+        (prevTrainDataset) => prevTrainDataset.train !== action.payload.train
+      );
     }
 
     case "changeIsMoveForward": {
