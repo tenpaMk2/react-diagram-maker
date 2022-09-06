@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, MouseEvent } from "react";
+import { ChangeEvent, Dispatch, DragEvent, MouseEvent } from "react";
 import { Actions, State } from "./reducer/reducer";
 import Upload from "./svg/Upload";
 
@@ -24,8 +24,7 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
     link.click();
   };
 
-  const upload = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
+  const upload = (file: File) => {
     const fileReader = new FileReader();
 
     fileReader.onerror = (e: ProgressEvent<FileReader>) => {
@@ -53,7 +52,18 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
       });
     };
 
-    fileReader.readAsText(event.target.files![0], "UTF-8");
+    fileReader.readAsText(file, "UTF-8");
+  };
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    upload(event.target.files![0]);
+  };
+
+  const onDrop = (event: DragEvent<HTMLLabelElement>) => {
+    event.preventDefault();
+
+    upload(event.dataTransfer.files[0]);
   };
 
   return (
@@ -78,6 +88,10 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
           <div className="flex w-full items-center justify-center">
             <label
               htmlFor="dropzone-file"
+              onDrop={onDrop}
+              onDragOver={(e: DragEvent<HTMLLabelElement>) =>
+                e.preventDefault()
+              }
               className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
             >
               <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
@@ -90,7 +104,7 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
                 id="dropzone-file"
                 type="file"
                 accept="application/JSON"
-                onChange={upload}
+                onChange={onChange}
                 className="hidden"
               />
             </label>
