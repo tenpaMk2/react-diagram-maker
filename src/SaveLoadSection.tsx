@@ -1,5 +1,6 @@
 import { ChangeEvent, Dispatch, MouseEvent } from "react";
 import { Actions, State } from "./reducer/reducer";
+import Upload from "./svg/Upload";
 
 type Props = {
   state: State;
@@ -80,21 +81,7 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
               className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
             >
               <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
-                <svg
-                  aria-hidden="true"
-                  className="mb-3 h-10 w-10 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                  ></path>
-                </svg>
+                <Upload />
                 <p className="text-sm font-semibold">クリックでアップロード</p>
                 <p className="text-sm">またはドラッグ&ドロップしてください。</p>
                 <p className="text-xs">JSON</p>
