@@ -133,12 +133,10 @@ const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
             >
               &nbsp;
             </button>
-            <div
-              ref={ref}
-              className={`absolute bg-white p-4 shadow-lg ${hidden}`}
-            >
+            <div ref={ref} className={`bg-white p-4 shadow-lg ${hidden}`}>
               <CirclePicker
                 color={trainDataset.color}
+                width="100%"
                 colors={[
                   "#f44336",
                   "#e91e63",
