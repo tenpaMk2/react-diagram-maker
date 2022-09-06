@@ -1,4 +1,4 @@
-import TrashCan from "./svg/Trashcan";
+import TrashCan from "./svg/TrashCan";
 
 type Props = {
   onClick: () => void;
