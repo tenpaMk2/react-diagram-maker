@@ -1,13 +1,19 @@
-import { Color, RGBColor } from "react-color";
+import { RGBColor } from "react-color";
 import { TrainDataset, XYKey } from "../TimeInputsEachTrain";
 import {
   stationsToDownAndUpStations,
   stationsToTimeInputsLabels,
 } from "../TimeInputsSection";
 
+export type State = {
+  stations: string[];
+  trainDatasets: TrainDataset[];
+};
+
 export type Actions =
-  | { type: "changeStations"; payload: { stations: string[] } }
-  | { type: "addTrain"; payload: { train: string; stations: string[] } }
+  | { type: "addStation"; payload: { station: string } }
+  | { type: "removeStation"; payload: { station: string } }
+  | { type: "addTrain"; payload: { train: string } }
   | { type: "removeTrain"; payload: { train: string } }
   | { type: "changeRepeat"; payload: { train: string; repeat: number } }
   | {
@@ -27,67 +33,87 @@ export type Actions =
       payload: { train: string; color: RGBColor };
     }
   | {
-      type: "changeTrainDatasets";
-      payload: { trainDatasets: TrainDataset[] };
+      type: "changeFullState";
+      payload: { state: State };
     };
 
-export const reducer = (
+const changeStations = (
   prevTrainDatasets: TrainDataset[],
-  action: Actions
-): TrainDataset[] => {
+  newStations: string[]
+) => {
+  const downAndUpStations = stationsToDownAndUpStations(newStations);
+  const timeInputsLabels = stationsToTimeInputsLabels(newStations);
+
+  return prevTrainDatasets.map((prevTrainDataset) => {
+    const prevTimeInputsLabels = prevTrainDataset.data.map(
+      (xYKey) => xYKey.key
+    );
+
+    if (
+      JSON.stringify(prevTimeInputsLabels) === JSON.stringify(timeInputsLabels)
+    )
+      return prevTrainDataset;
+
+    const blankXYKeys: XYKey[] = timeInputsLabels.map((label, idx) => ({
+      x: new Date("invalid"),
+      y: downAndUpStations[idx],
+      key: label,
+      isPass: false,
+    }));
+
+    const newData = blankXYKeys.map((blankXYKey) => {
+      const searchResult = prevTrainDataset.data.filter(
+        (xykey) => xykey.key === blankXYKey.key
+      );
+      return searchResult.length === 1 ? searchResult[0] : blankXYKey;
+    });
+
+    return { ...prevTrainDataset, data: newData };
+  });
+};
+
+export const reducer = (prevState: State, action: Actions): State => {
   switch (action.type) {
-    case "changeStations": {
-      const downAndUpStations = stationsToDownAndUpStations(
-        action.payload.stations
+    case "addStation": {
+      const newStations = [...prevState.stations, action.payload.station];
+      const newTrainDatasets = changeStations(
+        prevState.trainDatasets,
+        newStations
       );
-      const timeInputsLabels = stationsToTimeInputsLabels(
-        action.payload.stations
+
+      return {
+        stations: newStations,
+        trainDatasets: newTrainDatasets,
+      };
+    }
+
+    case "removeStation": {
+      const newStations = prevState.stations.filter(
+        (station) => station !== action.payload.station
+      );
+      const newTrainDatasets = changeStations(
+        prevState.trainDatasets,
+        newStations
       );
 
-      return prevTrainDatasets.map((prevTrainDataset) => {
-        const prevTimeInputsLabels = prevTrainDataset.data.map(
-          (xYKey) => xYKey.key
-        );
-
-        if (
-          JSON.stringify(prevTimeInputsLabels) ===
-          JSON.stringify(timeInputsLabels)
-        )
-          return prevTrainDataset;
-
-        const blankXYKeys: XYKey[] = timeInputsLabels.map((label, idx) => ({
-          x: new Date("invalid"),
-          y: downAndUpStations[idx],
-          key: label,
-          isPass: false,
-        }));
-
-        const newData = blankXYKeys.map((blankXYKey) => {
-          const searchResult = prevTrainDataset.data.filter(
-            (xykey) => xykey.key === blankXYKey.key
-          );
-          return searchResult.length === 1 ? searchResult[0] : blankXYKey;
-        });
-
-        return { ...prevTrainDataset, data: newData };
-      });
+      return {
+        stations: newStations,
+        trainDatasets: newTrainDatasets,
+      };
     }
 
     case "addTrain": {
+      const prevTrainDatasets = prevState.trainDatasets;
       const filtered = prevTrainDatasets.filter(
         (prevTrainDataset) => prevTrainDataset.train === action.payload.train
       );
       if (0 < filtered.length) {
         // TODO: alert existed train name.
-        return prevTrainDatasets;
+        return prevState;
       }
 
-      const downAndUpStations = stationsToDownAndUpStations(
-        action.payload.stations
-      );
-      const timeInputsLabels = stationsToTimeInputsLabels(
-        action.payload.stations
-      );
+      const downAndUpStations = stationsToDownAndUpStations(prevState.stations);
+      const timeInputsLabels = stationsToTimeInputsLabels(prevState.stations);
 
       const initialTrainDataset: TrainDataset = {
         train: action.payload.train,
@@ -102,49 +128,64 @@ export const reducer = (
         isMoveForward: false,
       };
 
-      return [...prevTrainDatasets, initialTrainDataset];
+      return {
+        ...prevState,
+        trainDatasets: [...prevTrainDatasets, initialTrainDataset],
+      };
     }
 
     case "removeTrain": {
-      return prevTrainDatasets.filter(
-        (prevTrainDataset) => prevTrainDataset.train !== action.payload.train
-      );
+      return {
+        ...prevState,
+        trainDatasets: prevState.trainDatasets.filter(
+          (prevTrainDataset) => prevTrainDataset.train !== action.payload.train
+        ),
+      };
     }
 
     case "changeIsMoveForward": {
+      const prevTrainDatasets = prevState.trainDatasets;
       const trains = prevTrainDatasets.map(
         (prevTrainDataset) => prevTrainDataset.train
       );
       const idx = trains.indexOf(action.payload.train);
-      if (idx === -1) return prevTrainDatasets; // TODO: error invalid trainName
+      if (idx === -1) return prevState; // TODO: error invalid trainName
 
       const newTrainDatasets = [...prevTrainDatasets];
       newTrainDatasets[idx].isMoveForward = action.payload.isMoveForward;
 
-      return newTrainDatasets;
+      return {
+        ...prevState,
+        trainDatasets: newTrainDatasets,
+      };
     }
 
     case "changeRepeat": {
+      const prevTrainDatasets = prevState.trainDatasets;
       const trains = prevTrainDatasets.map(
         (prevTrainDataset) => prevTrainDataset.train
       );
       const idx = trains.indexOf(action.payload.train);
-      if (idx === -1) return prevTrainDatasets; // TODO: error invalid trainName
+      if (idx === -1) return prevState; // TODO: error invalid trainName
 
       const newTrainDatasets = [...prevTrainDatasets];
       newTrainDatasets[idx].repeat = action.payload.repeat;
 
-      return newTrainDatasets;
+      return {
+        ...prevState,
+        trainDatasets: newTrainDatasets,
+      };
     }
 
     case "changeTime": {
+      const prevTrainDatasets = prevState.trainDatasets;
       const trains = prevTrainDatasets.map(
         (prevTrainDataset) => prevTrainDataset.train
       );
       const trainIdx = trains.indexOf(action.payload.train);
       if (trainIdx === -1) {
         // TODO: error invalid trainName;
-        return prevTrainDatasets;
+        return prevState;
       }
       const prevTrainDataset = prevTrainDatasets[trainIdx];
 
@@ -152,7 +193,7 @@ export const reducer = (
       const dataIdx = keys.indexOf(action.payload.key);
       if (dataIdx === -1) {
         // TODO: error invalid key;
-        return prevTrainDatasets;
+        return prevState;
       }
 
       const diffMS =
@@ -173,7 +214,10 @@ export const reducer = (
         const newTrainDatasets = [...prevTrainDatasets];
         newTrainDatasets[trainIdx] = newTrainDataset;
 
-        return newTrainDatasets;
+        return {
+          ...prevState,
+          trainDatasets: newTrainDatasets,
+        };
       }
 
       const newData = [...prevTrainDataset.data];
@@ -195,17 +239,21 @@ export const reducer = (
       const newTrainDatasets = [...prevTrainDatasets];
       newTrainDatasets[trainIdx] = newTrainDataset;
 
-      return newTrainDatasets;
+      return {
+        ...prevState,
+        trainDatasets: newTrainDatasets,
+      };
     }
 
     case "changeIsPass": {
+      const prevTrainDatasets = prevState.trainDatasets;
       const trains = prevTrainDatasets.map(
         (prevTrainDataset) => prevTrainDataset.train
       );
       const trainIdx = trains.indexOf(action.payload.train);
       if (trainIdx === -1) {
         // TODO: error invalid trainName;
-        return prevTrainDatasets;
+        return prevState;
       }
       const prevTrainDataset = prevTrainDatasets[trainIdx];
 
@@ -213,7 +261,7 @@ export const reducer = (
       const dataIdx = keys.indexOf(action.payload.key);
       if (dataIdx === -1) {
         // TODO: error invalid key;
-        return prevTrainDatasets;
+        return prevState;
       }
 
       const newXYKey = {
@@ -230,17 +278,21 @@ export const reducer = (
       const newTrainDatasets = [...prevTrainDatasets];
       newTrainDatasets[trainIdx] = newTrainDataset;
 
-      return newTrainDatasets;
+      return {
+        ...prevState,
+        trainDatasets: newTrainDatasets,
+      };
     }
 
     case "changeColor": {
+      const prevTrainDatasets = prevState.trainDatasets;
       const trains = prevTrainDatasets.map(
         (prevTrainDataset) => prevTrainDataset.train
       );
       const trainIdx = trains.indexOf(action.payload.train);
       if (trainIdx === -1) {
         // TODO: error invalid trainName;
-        return prevTrainDatasets;
+        return prevState;
       }
       const prevTrainDataset = prevTrainDatasets[trainIdx];
 
@@ -252,17 +304,25 @@ export const reducer = (
       const newTrainDatasets = [...prevTrainDatasets];
       newTrainDatasets[trainIdx] = newTrainDataset;
 
-      return newTrainDatasets;
+      return {
+        ...prevState,
+        trainDatasets: newTrainDatasets,
+      };
     }
 
-    case "changeTrainDatasets": {
-      return action.payload.trainDatasets.map((trainDataset) => ({
-        ...trainDataset,
-        data: trainDataset.data.map((xYKey) => ({
-          ...xYKey,
-          x: new Date(xYKey.x),
-        })),
-      }));
+    case "changeFullState": {
+      return {
+        ...action.payload.state,
+        trainDatasets: action.payload.state.trainDatasets.map(
+          (trainDataset) => ({
+            ...trainDataset,
+            data: trainDataset.data.map((xYKey) => ({
+              ...xYKey,
+              x: new Date(xYKey.x),
+            })),
+          })
+        ),
+      };
     }
   }
 };

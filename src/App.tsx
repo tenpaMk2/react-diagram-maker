@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import StationSection from "./StationSection";
 import TimeInputsSection from "./TimeInputsSection";
 import ChartSection from "./ChartSection";
@@ -9,34 +9,10 @@ import RouteMapSection from "./RouteMapSection";
 import SaveLoadSection from "./SaveLoadSection";
 
 const App = () => {
-  const [stations, setStations] = useState<string[]>([]);
-  const [trainDatasets, dispatch] = useReducer(reducer, []);
-
-  const addStation = (newStationName: string) => {
-    setStations((prevStations) => {
-      const newStations = [...prevStations];
-      newStations.push(newStationName);
-
-      dispatch({ type: "changeStations", payload: { stations: newStations } });
-      return newStations;
-    });
-  };
-
-  const removeStation = (stationName: string) => {
-    setStations((prevStations) => {
-      const newStations = prevStations.filter(
-        (prevStationName) => prevStationName !== stationName
-      );
-
-      dispatch({ type: "changeStations", payload: { stations: newStations } });
-      return newStations;
-    });
-  };
-
-  const changeStations = (stations: string[]) => {
-    setStations(stations);
-    dispatch({ type: "changeStations", payload: { stations: stations } });
-  };
+  const [state, dispatch] = useReducer(reducer, {
+    stations: [],
+    trainDatasets: [],
+  });
 
   return (
     <div className="m-4 rounded-lg bg-slate-100 p-4">
@@ -44,30 +20,17 @@ const App = () => {
         ダイヤグラム生成くん
       </h1>
 
-      <StationSection
-        stations={stations}
-        addStation={addStation}
-        removeStation={removeStation}
-      />
+      <StationSection stations={state.stations} dispatch={dispatch} />
 
-      <TimeInputsSection
-        stations={stations}
-        trainDatasets={trainDatasets}
-        dispatch={dispatch}
-      />
+      <TimeInputsSection state={state} dispatch={dispatch} />
 
-      <ChartSection stations={stations} trainDatasets={trainDatasets} />
+      <ChartSection state={state} />
 
-      <TimetableSection trainDatasets={trainDatasets} />
+      <TimetableSection trainDatasets={state.trainDatasets} />
 
-      <RouteMapSection stations={stations} trainDatasets={trainDatasets} />
+      <RouteMapSection state={state} />
 
-      <SaveLoadSection
-        stations={stations}
-        trainDatasets={trainDatasets}
-        changeStations={changeStations}
-        dispatch={dispatch}
-      />
+      <SaveLoadSection state={state} dispatch={dispatch} />
 
       <Footer />
     </div>

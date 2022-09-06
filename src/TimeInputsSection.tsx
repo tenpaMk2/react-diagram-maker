@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, useState } from "react";
-import { Actions } from "./reducer/reducer";
-import TimeListEachTrain, { TrainDataset } from "./TimeInputsEachTrain";
+import { Actions, State } from "./reducer/reducer";
+import TimeListEachTrain from "./TimeInputsEachTrain";
 import TimeInputsStationsAndOthers from "./TimeInputsStationsAndOthers";
 
 export const stationsToDownAndUpStations = (stations: string[]): string[] => {
@@ -32,15 +32,14 @@ export const stationsToTimeInputsLabels = (stations: string[]): string[] => {
 };
 
 type Props = {
-  stations: string[];
-  trainDatasets: TrainDataset[];
+  state: State;
   dispatch: Dispatch<Actions>;
 };
 
-const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
+const TimeInputsSection = ({ state, dispatch }: Props) => {
   const [trainText, setTrainText] = useState<string>("");
 
-  const timeInputsLabels = stationsToTimeInputsLabels(stations);
+  const timeInputsLabels = stationsToTimeInputsLabels(state.stations);
 
   const gridTemplateRowsStyle = {
     gridTemplateRows: `repeat(${
@@ -67,7 +66,7 @@ const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
 
           dispatch({
             type: "addTrain",
-            payload: { train: trainText, stations: stations },
+            payload: { train: trainText },
           });
           setTrainText("");
         }}
@@ -79,7 +78,7 @@ const TimeInputsSection = ({ stations, trainDatasets, dispatch }: Props) => {
       >
         <TimeInputsStationsAndOthers timeInputsStations={timeInputsLabels} />
 
-        {trainDatasets.map((trainDataset) => (
+        {state.trainDatasets.map((trainDataset) => (
           <TimeListEachTrain
             key={trainDataset.train}
             trainDataset={trainDataset}

@@ -10,6 +10,7 @@ import { ChangeEvent, useState } from "react";
 import { Scatter } from "react-chartjs-2";
 import { RGBColor } from "react-color";
 import { colorToRGBA } from "./lib/Color";
+import { State } from "./reducer/reducer";
 import { TrainDataset } from "./TimeInputsEachTrain";
 
 ChartJS.register(...registerables);
@@ -79,12 +80,9 @@ const trainDatasetsToChartDatasets = (
     };
   });
 
-type Props = {
-  stations: string[];
-  trainDatasets: TrainDataset[];
-};
+type Props = { state: State };
 
-const ChartSection = ({ stations, trainDatasets }: Props) => {
+const ChartSection = ({ state }: Props) => {
   const [height, setHeight] = useState<number>(50);
 
   const options: ChartOptions<"scatter"> = {
@@ -101,7 +99,7 @@ const ChartSection = ({ stations, trainDatasets }: Props) => {
       },
       y: {
         type: "category",
-        labels: stations,
+        labels: state.stations,
       },
     },
     showLine: true,
@@ -114,7 +112,7 @@ const ChartSection = ({ stations, trainDatasets }: Props) => {
   };
 
   const data: ChartData<"scatter"> = {
-    datasets: trainDatasetsToChartDatasets(trainDatasets),
+    datasets: trainDatasetsToChartDatasets(state.trainDatasets),
   };
 
   return (

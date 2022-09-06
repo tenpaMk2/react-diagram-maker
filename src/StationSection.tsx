@@ -1,13 +1,13 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, Dispatch, KeyboardEvent, useState } from "react";
+import { Actions } from "./reducer/reducer";
 import Station from "./Station";
 
 type Props = {
   stations: string[];
-  addStation: (newStationName: string) => void;
-  removeStation: (stationName: string) => void;
+  dispatch: Dispatch<Actions>;
 };
 
-const StationSection = ({ stations, addStation, removeStation }: Props) => {
+const StationSection = ({ stations, dispatch }: Props) => {
   const [text, setText] = useState("");
 
   return (
@@ -24,7 +24,7 @@ const StationSection = ({ stations, addStation, removeStation }: Props) => {
           if (e.key !== "Enter") return;
           if (!text.match(/\S/g)) return;
 
-          addStation(text);
+          dispatch({ type: "addStation", payload: { station: text } });
           setText("");
         }}
       />
@@ -36,7 +36,9 @@ const StationSection = ({ stations, addStation, removeStation }: Props) => {
             key={station}
             stationName={station}
             isLast={idx === stations.length - 1}
-            removeStation={removeStation}
+            removeStation={(station: string) =>
+              dispatch({ type: "removeStation", payload: { station: station } })
+            }
           />
         ))}
       </div>

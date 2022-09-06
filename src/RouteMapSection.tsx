@@ -1,14 +1,11 @@
 import { colorToRGBA } from "./lib/Color";
-import { TrainDataset } from "./TimeInputsEachTrain";
+import { State } from "./reducer/reducer";
 
-type Props = {
-  stations: string[];
-  trainDatasets: TrainDataset[];
-};
+type Props = { state: State };
 
-const RouteMapSection = ({ stations, trainDatasets }: Props) => {
-  const eachTrainDatas = trainDatasets.map((trainDataset) => {
-    const isPasses = stations.map((station) => {
+const RouteMapSection = ({ state }: Props) => {
+  const eachTrainDatas = state.trainDatasets.map((trainDataset) => {
+    const isPasses = state.stations.map((station) => {
       const notPasses = trainDataset.data.filter(
         (d) => d.y === station && !d.isPass
       );
@@ -19,7 +16,7 @@ const RouteMapSection = ({ stations, trainDatasets }: Props) => {
       train: trainDataset.train,
       color: trainDataset.color,
       stationData: isPasses.map((isPass, idx) => ({
-        station: stations[idx],
+        station: state.stations[idx],
         isPass: isPass,
       })),
     };
@@ -32,7 +29,7 @@ const RouteMapSection = ({ stations, trainDatasets }: Props) => {
       <section
         className="grid overflow-scroll rounded-xl bg-white p-8"
         style={{
-          gridTemplateColumns: `repeat(${stations.length},1fr) max-content`,
+          gridTemplateColumns: `repeat(${state.stations.length},1fr) max-content`,
         }}
       >
         {eachTrainDatas.map((trainData) => (
@@ -60,7 +57,7 @@ const RouteMapSection = ({ stations, trainDatasets }: Props) => {
           </>
         ))}
 
-        {stations.map((station) => (
+        {state.stations.map((station) => (
           <div key={station} className="flex justify-center text-xl">
             <div style={{ writingMode: "vertical-rl" }}>{station}</div>
           </div>

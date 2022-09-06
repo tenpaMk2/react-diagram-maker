@@ -1,20 +1,12 @@
 import { ChangeEvent, Dispatch, MouseEvent } from "react";
-import { Actions } from "./reducer/reducer";
-import { TrainDataset } from "./TimeInputsEachTrain";
+import { Actions, State } from "./reducer/reducer";
 
 type Props = {
-  stations: string[];
-  trainDatasets: TrainDataset[];
-  changeStations: (stations: string[]) => void;
+  state: State;
   dispatch: Dispatch<Actions>;
 };
 
-const SaveLoadSection = ({
-  stations,
-  trainDatasets,
-  changeStations,
-  dispatch,
-}: Props) => {
+const SaveLoadSection = ({ state, dispatch }: Props) => {
   /**
    * @see https://codesandbox.io/s/4t2xb
    */
@@ -22,7 +14,7 @@ const SaveLoadSection = ({
     event.preventDefault();
 
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify({ stations: stations, trainDatasets: trainDatasets })
+      JSON.stringify(state)
     )}`;
     const link = document.createElement("a");
     link.href = jsonString;
@@ -52,15 +44,11 @@ const SaveLoadSection = ({
         return;
       }
 
-      const obj = parsed as {
-        stations: string[];
-        trainDatasets: TrainDataset[];
-      };
+      const obj = parsed as State;
 
-      changeStations(obj.stations);
       dispatch({
-        type: "changeTrainDatasets",
-        payload: { trainDatasets: obj.trainDatasets },
+        type: "changeFullState",
+        payload: { state: obj },
       });
     };
 
