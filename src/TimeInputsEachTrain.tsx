@@ -110,6 +110,7 @@ const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
   };
 
   const onChangeComplete = (color: ColorResult) => {
+    setHidden("hidden");
     dispatch({
       type: "changeColor",
       payload: { train: trainDataset.train, color: color.rgb },
