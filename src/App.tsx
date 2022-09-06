@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import TimetableSection from "./TimetableSection";
 import { reducer } from "./reducer/reducer";
 import RouteMapSection from "./RouteMapSection";
+import SaveLoadSection from "./SaveLoadSection";
 
 const App = () => {
   const [stations, setStations] = useState<string[]>([]);
@@ -32,6 +33,11 @@ const App = () => {
     });
   };
 
+  const changeStations = (stations: string[]) => {
+    setStations(stations);
+    dispatch({ type: "changeStations", payload: { stations: stations } });
+  };
+
   return (
     <div className="m-4 rounded-lg bg-slate-100 p-4">
       <h1 className="text-center text-4xl text-gray-900">
@@ -55,6 +61,13 @@ const App = () => {
       <TimetableSection trainDatasets={trainDatasets} />
 
       <RouteMapSection stations={stations} trainDatasets={trainDatasets} />
+
+      <SaveLoadSection
+        stations={stations}
+        trainDatasets={trainDatasets}
+        changeStations={changeStations}
+        dispatch={dispatch}
+      />
 
       <Footer />
     </div>

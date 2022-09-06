@@ -25,6 +25,10 @@ export type Actions =
   | {
       type: "changeColor";
       payload: { train: string; color: RGBColor };
+    }
+  | {
+      type: "changeTrainDatasets";
+      payload: { trainDatasets: TrainDataset[] };
     };
 
 export const reducer = (
@@ -249,6 +253,16 @@ export const reducer = (
       newTrainDatasets[trainIdx] = newTrainDataset;
 
       return newTrainDatasets;
+    }
+
+    case "changeTrainDatasets": {
+      return action.payload.trainDatasets.map((trainDataset) => ({
+        ...trainDataset,
+        data: trainDataset.data.map((xYKey) => ({
+          ...xYKey,
+          x: new Date(xYKey.x),
+        })),
+      }));
     }
   }
 };
