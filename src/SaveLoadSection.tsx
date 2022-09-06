@@ -15,7 +15,7 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
     event.preventDefault();
 
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify(state)
+      JSON.stringify({ ...state, ver: 1 })
     )}`;
     const link = document.createElement("a");
     link.href = jsonString;
