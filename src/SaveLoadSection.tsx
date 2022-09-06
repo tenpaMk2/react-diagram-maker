@@ -1,4 +1,5 @@
 import { ChangeEvent, Dispatch, DragEvent, MouseEvent } from "react";
+import { jSONToState } from "./lib/StateValidator";
 import { Actions, State } from "./reducer/reducer";
 import Upload from "./svg/Upload";
 
@@ -36,19 +37,12 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
       const result = e.target!.result;
       if (typeof result !== "string") return;
 
-      let parsed;
-      try {
-        parsed = JSON.parse(result);
-      } catch (e) {
-        alert(e);
-        return;
-      }
-
-      const obj = parsed as State;
+      const state = jSONToState(result);
+      if (!state) return;
 
       dispatch({
         type: "changeFullState",
-        payload: { state: obj },
+        payload: { state: state },
       });
     };
 

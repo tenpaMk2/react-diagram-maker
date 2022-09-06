@@ -311,18 +311,7 @@ export const reducer = (prevState: State, action: Actions): State => {
     }
 
     case "changeFullState": {
-      return {
-        ...action.payload.state,
-        trainDatasets: action.payload.state.trainDatasets.map(
-          (trainDataset) => ({
-            ...trainDataset,
-            data: trainDataset.data.map((xYKey) => ({
-              ...xYKey,
-              x: new Date(xYKey.x),
-            })),
-          })
-        ),
-      };
+      return action.payload.state;
     }
   }
 };
