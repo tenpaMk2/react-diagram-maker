@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { colorToRGBA } from "./lib/Color";
 import { State } from "./reducer/reducer";
 
@@ -33,7 +34,7 @@ const RouteMapSection = ({ state }: Props) => {
         }}
       >
         {eachTrainDatas.map((trainData) => (
-          <>
+          <Fragment key={`${trainData.train}`}>
             {trainData.stationData.map((d) => (
               <div
                 key={`${trainData.train}${d.station}`}
@@ -51,10 +52,8 @@ const RouteMapSection = ({ state }: Props) => {
                 </div>
               </div>
             ))}
-            <div key={trainData.train} className="p-2 text-xl">
-              {trainData.train}
-            </div>
-          </>
+            <div className="p-2 text-xl">{trainData.train}</div>
+          </Fragment>
         ))}
 
         {state.stations.map((station) => (
