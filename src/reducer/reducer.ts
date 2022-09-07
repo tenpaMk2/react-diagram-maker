@@ -107,14 +107,10 @@ export const reducer = (prevState: State, action: Actions): State => {
     }
 
     case "addTrain": {
-      const prevTrainDatasets = prevState.trainDatasets;
-      const filtered = prevTrainDatasets.filter(
+      const filtered = prevState.trainDatasets.filter(
         (prevTrainDataset) => prevTrainDataset.train === action.payload.train
       );
-      if (0 < filtered.length) {
-        // TODO: alert existed train name.
-        return prevState;
-      }
+      if (0 < filtered.length) return prevState;
 
       const downAndUpStations = stationsToDownAndUpStations(prevState.stations);
       const timeInputsLabels = stationsToTimeInputsLabels(prevState.stations);
@@ -134,7 +130,7 @@ export const reducer = (prevState: State, action: Actions): State => {
 
       return {
         ...prevState,
-        trainDatasets: [...prevTrainDatasets, initialTrainDataset],
+        trainDatasets: [...prevState.trainDatasets, initialTrainDataset],
       };
     }
 

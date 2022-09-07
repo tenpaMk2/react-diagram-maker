@@ -53,12 +53,19 @@ const TimeInputsSection = ({ state, dispatch }: Props) => {
 
       <TextInput
         placeholder="電車名を入力"
-        onEnterPress={(text: string) =>
+        onEnterPress={(text: string) => {
+          const filtered = state.trainDatasets.filter(
+            (trainDataset) => trainDataset.train === text
+          );
+          if (0 < filtered.length) {
+            alert("列車名が重複しています。");
+            return;
+          }
           dispatch({
             type: "addTrain",
             payload: { train: text },
-          })
-        }
+          });
+        }}
       />
 
       <div
