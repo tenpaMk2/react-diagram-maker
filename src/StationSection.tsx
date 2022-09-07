@@ -14,9 +14,13 @@ const StationSection = ({ stations, dispatch }: Props) => (
 
     <TextInput
       placeholder="駅名を入力"
-      onEnterPress={(text: string) =>
-        dispatch({ type: "addStation", payload: { station: text } })
-      }
+      onEnterPress={(text: string) => {
+        if (stations.includes(text)) {
+          alert("駅名が重複しています");
+          return;
+        }
+        dispatch({ type: "addStation", payload: { station: text } });
+      }}
     />
 
     {/* create timeline */}

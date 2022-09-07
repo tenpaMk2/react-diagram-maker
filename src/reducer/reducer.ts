@@ -75,6 +75,10 @@ const changeStations = (
 export const reducer = (prevState: State, action: Actions): State => {
   switch (action.type) {
     case "addStation": {
+      if (prevState.stations.includes(action.payload.station)) {
+        return prevState;
+      }
+
       const newStations = [...prevState.stations, action.payload.station];
       const newTrainDatasets = changeStations(
         prevState.trainDatasets,
