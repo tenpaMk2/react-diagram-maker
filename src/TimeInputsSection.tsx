@@ -1,5 +1,6 @@
-import { ChangeEvent, Dispatch, KeyboardEvent, useState } from "react";
+import { Dispatch } from "react";
 import { Actions, State } from "./reducer/reducer";
+import TextInput from "./TextInput";
 import TimeListEachTrain from "./TimeInputsEachTrain";
 import TimeInputsStationsAndOthers from "./TimeInputsStationsAndOthers";
 
@@ -37,8 +38,6 @@ type Props = {
 };
 
 const TimeInputsSection = ({ state, dispatch }: Props) => {
-  const [trainText, setTrainText] = useState<string>("");
-
   const timeInputsLabels = stationsToTimeInputsLabels(state.stations);
 
   const gridTemplateRowsStyle = {
@@ -52,24 +51,14 @@ const TimeInputsSection = ({ state, dispatch }: Props) => {
     <section className="mx-4 my-8 flex auto-cols-min flex-col gap-4">
       <h2 className="text-2xl">時刻入力</h2>
 
-      <input
-        type="text"
-        value={trainText}
+      <TextInput
         placeholder="電車名を入力"
-        className="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setTrainText(e.target.value)
-        }
-        onKeyPress={(e: KeyboardEvent<HTMLInputElement>) => {
-          if (e.key !== "Enter") return;
-          if (!trainText.match(/\S/g)) return;
-
+        onEnterPress={(text: string) =>
           dispatch({
             type: "addTrain",
-            payload: { train: trainText },
-          });
-          setTrainText("");
-        }}
+            payload: { train: text },
+          })
+        }
       />
 
       <div
