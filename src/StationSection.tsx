@@ -16,10 +16,10 @@ const StationSection = ({ stations, dispatch }: Props) => (
       placeholder="駅名を入力"
       onEnterPress={(text: string) => {
         if (stations.includes(text)) {
-          alert("駅名が重複しています");
+          alert(`駅名が重複しています`);
           return;
         }
-        dispatch({ type: "addStation", payload: { station: text } });
+        dispatch({ type: `addStation`, payload: { station: text } });
       }}
     />
 
@@ -31,7 +31,7 @@ const StationSection = ({ stations, dispatch }: Props) => (
           stationName={station}
           isLast={idx === stations.length - 1}
           removeStation={(station: string) =>
-            dispatch({ type: "removeStation", payload: { station: station } })
+            dispatch({ type: `removeStation`, payload: { station: station } })
           }
         />
       ))}

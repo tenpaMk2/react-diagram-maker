@@ -19,8 +19,8 @@ export type TrainDataset = {
 
 const dateToInputValue = (time: Date) =>
   Number.isNaN(time.getTime())
-    ? ""
-    : `${("00" + time.getHours()).slice(-2)}:${("00" + time.getMinutes()).slice(
+    ? ``
+    : `${(`00` + time.getHours()).slice(-2)}:${(`00` + time.getMinutes()).slice(
         -2
       )}`;
 
@@ -43,12 +43,12 @@ const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
       handler(event); // Call the handler only if the click is outside of the element passed.
     };
 
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
+    document.addEventListener(`mousedown`, listener);
+    document.addEventListener(`touchstart`, listener);
 
     return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
+      document.removeEventListener(`mousedown`, listener);
+      document.removeEventListener(`touchstart`, listener);
     };
   }, [ref, handler]); // Reload only if ref or handler changes
 };
@@ -59,10 +59,10 @@ type Props = {
 };
 
 const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
-  const [hidden, setHidden] = useState<"hidden" | "">("hidden");
+  const [hidden, setHidden] = useState<`hidden` | ``>(`hidden`);
   const ref = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(ref, () => setHidden("hidden"));
+  useOnClickOutside(ref, () => setHidden(`hidden`));
 
   const onRepeatChange = (repeat: number) => {
     dispatch({
@@ -102,7 +102,7 @@ const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
 
   const removeTrain = () => {
     dispatch({
-      type: "removeTrain",
+      type: `removeTrain`,
       payload: {
         train: trainDataset.train,
       },
@@ -110,9 +110,9 @@ const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
   };
 
   const onChangeComplete = (color: ColorResult) => {
-    setHidden("hidden");
+    setHidden(`hidden`);
     dispatch({
-      type: "changeColor",
+      type: `changeColor`,
       payload: { train: trainDataset.train, color: color.rgb },
     });
   };

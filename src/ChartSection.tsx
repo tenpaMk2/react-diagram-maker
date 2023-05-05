@@ -20,8 +20,8 @@ const createBackgroundRGBA = (c: RGBColor) =>
 
 const trainDatasetsToChartDatasets = (
   trainDatasets: TrainDataset[]
-): ChartDataset<"scatter">[] =>
-  trainDatasets.map((trainDataset): ChartDataset<"scatter"> => {
+): ChartDataset<`scatter`>[] =>
+  trainDatasets.map((trainDataset): ChartDataset<`scatter`> => {
     if (trainDataset.data.length === 0)
       return {
         label: trainDataset.train,
@@ -85,14 +85,14 @@ type Props = { state: State };
 const ChartSection = ({ state }: Props) => {
   const [height, setHeight] = useState<number>(50);
 
-  const options: ChartOptions<"scatter"> = {
+  const options: ChartOptions<`scatter`> = {
     scales: {
       x: {
-        type: "time",
+        type: `time`,
         time: {
-          unit: "hour",
+          unit: `hour`,
           displayFormats: {
-            hour: "HH:mm",
+            hour: `HH:mm`,
           },
         },
         ticks: {
@@ -100,7 +100,7 @@ const ChartSection = ({ state }: Props) => {
         },
       },
       y: {
-        type: "category",
+        type: `category`,
         labels: state.stations,
       },
     },
@@ -113,7 +113,7 @@ const ChartSection = ({ state }: Props) => {
     maintainAspectRatio: false,
   };
 
-  const data: ChartData<"scatter"> = {
+  const data: ChartData<`scatter`> = {
     datasets: trainDatasetsToChartDatasets(state.trainDatasets),
   };
 

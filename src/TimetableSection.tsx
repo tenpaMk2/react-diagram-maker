@@ -90,16 +90,16 @@ const TimetableSection = ({ trainDatasets }: Props) => {
         <div
           key={`div:${hour}`}
           className={`flex border text-2xl ${
-            hour % 2 ? "bg-white" : "bg-blue-100"
+            hour % 2 ? `bg-white` : `bg-blue-100`
           }`}
         >
           {minuteAndColors.map((minuteAndColor) => (
             <p
               key={`${minuteAndColor.train}${minuteAndColor.minute}`}
-              className={"p-2 font-bold"}
+              className="p-2 font-bold"
               style={{ color: minuteAndColor.color }}
             >
-              {String(minuteAndColor.minute).padStart(2, "0")}
+              {String(minuteAndColor.minute).padStart(2, `0`)}
             </p>
           ))}
         </div>,

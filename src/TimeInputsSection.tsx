@@ -58,11 +58,11 @@ const TimeInputsSection = ({ state, dispatch }: Props) => {
             (trainDataset) => trainDataset.train === text
           );
           if (0 < filtered.length) {
-            alert("列車名が重複しています。");
+            alert(`列車名が重複しています。`);
             return;
           }
           dispatch({
-            type: "addTrain",
+            type: `addTrain`,
             payload: { train: text },
           });
         }}

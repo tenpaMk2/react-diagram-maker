@@ -35,18 +35,18 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
 
     fileReader.onload = (e: ProgressEvent<FileReader>) => {
       const result = e.target!.result;
-      if (typeof result !== "string") return;
+      if (typeof result !== `string`) return;
 
       const state = jSONToState(result);
       if (!state) return;
 
       dispatch({
-        type: "changeFullState",
+        type: `changeFullState`,
         payload: { state: state },
       });
     };
 
-    fileReader.readAsText(file, "UTF-8");
+    fileReader.readAsText(file, `UTF-8`);
   };
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {

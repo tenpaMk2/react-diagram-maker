@@ -46,7 +46,7 @@ const RouteMapSection = ({ state }: Props) => {
                 >
                   <div
                     className={`m-auto h-4 w-4 rounded-full ${
-                      d.isPass ? "" : "bg-white"
+                      d.isPass ? `` : `bg-white`
                     }`}
                   ></div>
                 </div>
@@ -58,7 +58,7 @@ const RouteMapSection = ({ state }: Props) => {
 
         {state.stations.map((station) => (
           <div key={station} className="flex justify-center text-xl">
-            <div style={{ writingMode: "vertical-rl" }}>{station}</div>
+            <div style={{ writingMode: `vertical-rl` }}>{station}</div>
           </div>
         ))}
         <div></div>

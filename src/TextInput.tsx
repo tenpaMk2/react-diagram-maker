@@ -20,7 +20,7 @@ const TextInput = ({ placeholder, onEnterPress }: Props) => {
         if (!text.match(/\S/g)) return;
 
         onEnterPress(text);
-        setText("");
+        setText(``);
       }}
     />
   );

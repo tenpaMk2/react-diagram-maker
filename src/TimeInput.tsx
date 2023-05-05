@@ -27,7 +27,7 @@ const TimeInput = ({ value, isPass, onTimeChange, onIsPassChange }: Props) => {
           onTimeChange(e.target.value);
         }}
         className={`grow rounded-lg border border-gray-300 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ${
-          isPass ? "bg-gray-300" : "bg-gray-50"
+          isPass ? `bg-gray-300` : `bg-gray-50`
         }`}
       />
       <section className="flex items-baseline gap-x-2">
