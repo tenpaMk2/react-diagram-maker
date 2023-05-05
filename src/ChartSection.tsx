@@ -91,10 +91,12 @@ const ChartSection = ({ state }: Props) => {
         type: "time",
         time: {
           unit: "hour",
-          stepSize: 1,
           displayFormats: {
             hour: "HH:mm",
           },
+        },
+        ticks: {
+          stepSize: 1,
         },
       },
       y: {
