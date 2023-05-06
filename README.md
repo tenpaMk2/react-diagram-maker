@@ -11,11 +11,11 @@ Techs:
 - [Chart.js](https://www.chartjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 
-## live demo
+## Live demo
 
 <https://tenpamk2-blog.netlify.app/apps/react-diagram-maker/>
 
-## screenshot
+## Screenshots
 
 ![1](./img/1.png)
 ![2](./img/2.png)
