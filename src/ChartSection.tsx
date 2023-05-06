@@ -15,8 +15,7 @@ import {
 import "chartjs-adapter-moment";
 import { ChangeEvent, useState } from "react";
 import { Scatter } from "react-chartjs-2";
-import { RGBColor } from "react-color";
-import { colorToRGBA } from "./lib/Color";
+import { colorToRGBA, colorToBackgroundRGBA } from "./lib/Color";
 import { State } from "./reducer/reducer";
 import { TrainDataset } from "./TimeInputsEachTrain";
 
@@ -31,9 +30,6 @@ ChartJS.register(
   Tooltip
 );
 
-const createBackgroundRGBA = (c: RGBColor) =>
-  `rgba(${c.r},${c.g},${c.b},${c.a ? c.a / 2 : 0.5})`;
-
 const trainDatasetsToChartDatasets = (
   trainDatasets: TrainDataset[]
 ): ChartDataset<`scatter`>[] =>
@@ -43,7 +39,7 @@ const trainDatasetsToChartDatasets = (
         label: trainDataset.train,
         data: [],
         borderColor: colorToRGBA(trainDataset.color),
-        backgroundColor: createBackgroundRGBA(trainDataset.color),
+        backgroundColor: colorToBackgroundRGBA(trainDataset.color),
       };
 
     const notPassXYKeys = trainDataset.data.filter((xYKey) => !xYKey.isPass);
@@ -59,7 +55,7 @@ const trainDatasetsToChartDatasets = (
         label: trainDataset.train, // @ts-ignore
         data: data,
         borderColor: colorToRGBA(trainDataset.color),
-        backgroundColor: createBackgroundRGBA(trainDataset.color),
+        backgroundColor: colorToBackgroundRGBA(trainDataset.color),
       };
 
     const endTimeMS = data[data.length - 1].x.getTime();
@@ -68,7 +64,7 @@ const trainDatasetsToChartDatasets = (
         label: trainDataset.train, // @ts-ignore
         data: data,
         borderColor: colorToRGBA(trainDataset.color),
-        backgroundColor: createBackgroundRGBA(trainDataset.color),
+        backgroundColor: colorToBackgroundRGBA(trainDataset.color),
       };
 
     const intervalMS = endTimeMS - startTimeMS;
@@ -92,7 +88,7 @@ const trainDatasetsToChartDatasets = (
       label: trainDataset.train, // @ts-ignore
       data: repeatedData,
       borderColor: colorToRGBA(trainDataset.color),
-      backgroundColor: createBackgroundRGBA(trainDataset.color),
+      backgroundColor: colorToBackgroundRGBA(trainDataset.color),
     };
   });
 
