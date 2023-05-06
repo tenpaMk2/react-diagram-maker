@@ -7,12 +7,10 @@ import TimetableSection from "./TimetableSection";
 import { reducer } from "./reducer/reducer";
 import RouteMapSection from "./RouteMapSection";
 import SaveLoadSection from "./SaveLoadSection";
+import { getInitialState } from "./lib/initial-state";
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, {
-    stations: [],
-    trainDatasets: [],
-  });
+  const [state, dispatch] = useReducer(reducer, getInitialState());
 
   return (
     <div className="m-4 rounded-lg bg-slate-100 p-4">
