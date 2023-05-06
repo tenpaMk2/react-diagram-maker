@@ -3,7 +3,14 @@ import {
   ChartData,
   ChartDataset,
   ChartOptions,
-  registerables,
+  TimeScale,
+  CategoryScale,
+  PointElement,
+  LineElement,
+  Legend,
+  Title,
+  SubTitle,
+  Tooltip,
 } from "chart.js";
 import "chartjs-adapter-moment";
 import { ChangeEvent, useState } from "react";
@@ -13,7 +20,16 @@ import { colorToRGBA } from "./lib/Color";
 import { State } from "./reducer/reducer";
 import { TrainDataset } from "./TimeInputsEachTrain";
 
-ChartJS.register(...registerables);
+ChartJS.register(
+  TimeScale,
+  CategoryScale,
+  PointElement,
+  LineElement,
+  Legend,
+  Title,
+  SubTitle,
+  Tooltip
+);
 
 const createBackgroundRGBA = (c: RGBColor) =>
   `rgba(${c.r},${c.g},${c.b},${c.a ? c.a / 2 : 0.5})`;
