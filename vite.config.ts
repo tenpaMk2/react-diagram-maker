@@ -7,8 +7,8 @@ export default defineConfig({
   server: {
     host: true,
   },
-  base: "/apps/react-diagram-maker/",
+  base: `/apps/react-diagram-maker/`, // WARNING: Sync this setting with other files.
   build: {
-    outDir: "react-diagram-maker",
+    outDir: `react-diagram-maker`,
   },
 });
