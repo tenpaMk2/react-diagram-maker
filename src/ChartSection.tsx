@@ -12,7 +12,8 @@ import {
   SubTitle,
   Tooltip,
 } from "chart.js";
-import "chartjs-adapter-moment";
+import { ja } from "date-fns/locale";
+import "chartjs-adapter-date-fns";
 import { ChangeEvent, useState } from "react";
 import { Scatter } from "react-chartjs-2";
 import { colorToRGBA, colorToBackgroundRGBA } from "./lib/Color";
@@ -109,6 +110,11 @@ const ChartSection = ({ state }: Props) => {
         },
         ticks: {
           stepSize: 1,
+        },
+        adapters: {
+          date: {
+            locale: ja,
+          },
         },
       },
       y: {
