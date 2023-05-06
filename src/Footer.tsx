@@ -7,6 +7,10 @@ import {
   HatenaShareButton,
   FacebookShareButton,
   FacebookIcon,
+  PinterestShareButton,
+  PinterestIcon,
+  RedditShareButton,
+  RedditIcon,
 } from "next-share";
 
 const url = `https://tenpamk2-blog.netlify.app/apps/react-diagram-maker/`; // WARNING: Sync this setting with other files.
@@ -14,7 +18,7 @@ const url = `https://tenpamk2-blog.netlify.app/apps/react-diagram-maker/`; // WA
 const Footer = () => {
   return (
     <footer className="flex flex-col items-center gap-2 text-sm italic text-gray-400">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         <LineShareButton url={url} title="ダイヤグラム生成くん">
           <LineIcon round={true} />
         </LineShareButton>
@@ -27,6 +31,12 @@ const Footer = () => {
         <FacebookShareButton url={url} quote="ダイヤグラム生成くん">
           <FacebookIcon round={true} />
         </FacebookShareButton>
+        <PinterestShareButton url={url} media="/ogp.webp">
+          <PinterestIcon round={true} />
+        </PinterestShareButton>
+        <RedditShareButton url={url} title={"ダイヤグラム生成くん"}>
+          <RedditIcon round={true} />
+        </RedditShareButton>
       </div>
       <p>
         <a href="https://twitter.com/tenpaMk2/" className="underline">
