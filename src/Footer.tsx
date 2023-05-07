@@ -48,7 +48,7 @@ const Footer = () => {
           href="https://github.com/tenpaMk2/react-diagram-maker/"
           className="underline"
         >
-          Source code: github
+          Source code: GitHub
         </a>
       </p>
     </footer>
