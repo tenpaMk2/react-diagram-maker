@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import StationSection from "./StationSection";
 import TimeInputsSection from "./TimeInputsSection";
 import ChartSection from "./ChartSection";
@@ -9,8 +9,19 @@ import RouteMapSection from "./RouteMapSection";
 import SaveLoadSection from "./SaveLoadSection";
 import { getInitialState } from "./lib/initial-state";
 
+const handleBeforeUnloadEvent = (event: BeforeUnloadEvent) => {
+  event.preventDefault();
+  event.returnValue = ``;
+};
+
 const App = () => {
   const [state, dispatch] = useReducer(reducer, getInitialState());
+
+  useEffect(() => {
+    window.addEventListener(`beforeunload`, handleBeforeUnloadEvent, true);
+    return () =>
+      window.removeEventListener(`beforeunload`, handleBeforeUnloadEvent, true);
+  }, []);
 
   return (
     <div className="m-4 rounded-lg bg-slate-100 p-4">
