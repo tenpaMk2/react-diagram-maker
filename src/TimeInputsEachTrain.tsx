@@ -20,9 +20,10 @@ export type TrainDataset = {
 const dateToInputValue = (time: Date) =>
   Number.isNaN(time.getTime())
     ? ``
-    : `${(`00` + time.getHours()).slice(-2)}:${(`00` + time.getMinutes()).slice(
-        -2
-      )}`;
+    : `${time.getHours().toString().padStart(2, `0`)}:${time
+        .getMinutes()
+        .toString()
+        .padStart(2, `0`)}`;
 
 const inputValueToDate = (inputValue: string) =>
   new Date(`2022-08-26T${inputValue}:00`);

@@ -3,6 +3,14 @@ import { jSONToState } from "./lib/StateValidator";
 import { Actions, State } from "./reducer/reducer";
 import Upload from "./svg/Upload";
 
+const createFileName = (): string => {
+  const d = new Date();
+  const year = d.getFullYear().toString().padStart(4, `0`);
+  const month = (d.getMonth() + 1).toString().padStart(2, `0`);
+  const date = d.getDate().toString().padStart(2, `0`);
+  return `diagram-${year}-${month}-${date}.json`;
+};
+
 type Props = {
   state: State;
   dispatch: Dispatch<Actions>;
@@ -20,7 +28,7 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
     )}`;
     const link = document.createElement("a");
     link.href = jsonString;
-    link.download = `diagram-${new Date().toJSON().slice(0, 10)}.json`;
+    link.download = createFileName();
 
     link.click();
   };
