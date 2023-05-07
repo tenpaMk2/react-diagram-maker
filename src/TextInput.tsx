@@ -6,7 +6,8 @@ type Props = {
 };
 
 const TextInput = ({ placeholder, onEnterPress }: Props) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(``);
+  const [isComposing, setIsComposing] = useState(false);
 
   return (
     <input
@@ -15,12 +16,20 @@ const TextInput = ({ placeholder, onEnterPress }: Props) => {
       placeholder={placeholder}
       className="mr-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
       onChange={(e: ChangeEvent<HTMLInputElement>) => setText(e.target.value)}
-      onKeyPress={(e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key !== "Enter") return;
-        if (!text.match(/\S/g)) return;
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (isComposing) return;
+        if (e.nativeEvent.isComposing) return;
+        if (e.key !== `Enter`) return;
+        if (!text.match(/\S/g)) return; // Ignore if text is empty or only contains whitespaces.
 
         onEnterPress(text);
         setText(``);
+      }}
+      onCompositionStart={() => {
+        setIsComposing(true);
+      }}
+      onCompositionEnd={() => {
+        setIsComposing(false);
       }}
     />
   );
