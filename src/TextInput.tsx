@@ -14,7 +14,7 @@ const TextInput = ({ placeholder, onEnterPress }: Props) => {
       type="text"
       value={text}
       placeholder={placeholder}
-      className="mr-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+      className="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
       onChange={(e: ChangeEvent<HTMLInputElement>) => setText(e.target.value)}
       onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
         if (isComposing) return;

@@ -9,7 +9,7 @@ type Props = {
 };
 
 const StationSection = ({ stations, dispatch }: Props) => (
-  <section className="mx-4 my-8 flex flex-col gap-4">
+  <section className="flex flex-col gap-4">
     <h2 className="text-2xl text-gray-800">駅</h2>
 
     <TextInput

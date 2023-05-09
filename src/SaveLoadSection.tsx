@@ -70,7 +70,7 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
 
   return (
     <>
-      <section className="mx-4 my-8 flex flex-col gap-2">
+      <section className="flex flex-col gap-2">
         <h2 className="text-2xl">保存</h2>
 
         <section className="flex flex-col justify-center gap-4 rounded-xl bg-white p-8">
@@ -83,34 +83,30 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
           </button>
         </section>
       </section>
-      <section className="mx-4 my-8 flex flex-col gap-2">
+      <section className="flex flex-col gap-2">
         <h2 className="text-2xl">読み込み</h2>
 
         <section className="flex flex-col justify-center gap-4 rounded-xl bg-white p-8">
-          <div className="flex w-full items-center justify-center">
-            <label
-              htmlFor="dropzone-file"
-              onDrop={onDrop}
-              onDragOver={(e: DragEvent<HTMLLabelElement>) =>
-                e.preventDefault()
-              }
-              className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
-            >
-              <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
-                <Upload />
-                <p className="text-sm font-semibold">クリックでアップロード</p>
-                <p className="text-sm">またはドラッグ&ドロップしてください。</p>
-                <p className="text-xs">JSON</p>
-              </div>
-              <input
-                id="dropzone-file"
-                type="file"
-                accept="application/JSON"
-                onChange={onChange}
-                className="hidden"
-              />
-            </label>
-          </div>
+          <label
+            htmlFor="dropzone-file"
+            onDrop={onDrop}
+            onDragOver={(e: DragEvent<HTMLLabelElement>) => e.preventDefault()}
+            className="flex h-64 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+          >
+            <div className="flex flex-col items-center justify-center gap-2 text-gray-500">
+              <Upload />
+              <p className="text-sm font-semibold">クリックでアップロード</p>
+              <p className="text-sm">またはドラッグ&ドロップしてください。</p>
+              <p className="text-xs">JSON</p>
+            </div>
+            <input
+              id="dropzone-file"
+              type="file"
+              accept="application/JSON"
+              onChange={onChange}
+              className="hidden"
+            />
+          </label>
         </section>
       </section>
     </>

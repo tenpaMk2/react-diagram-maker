@@ -48,7 +48,7 @@ const TimeInputsSection = ({ state, dispatch }: Props) => {
   };
 
   return (
-    <section className="mx-4 my-8 flex auto-cols-min flex-col gap-4">
+    <section className="flex flex-col gap-4">
       <h2 className="text-2xl">列車と発着時刻</h2>
 
       <TextInput

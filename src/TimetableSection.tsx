@@ -111,7 +111,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
         key={departureStation}
         className="grid grid-cols-[min-content_max-content] text-center text-xl"
       >
-        <h3 className="col-span-2 border bg-blue-700 py-2 px-4 text-center text-2xl text-white">
+        <h3 className="col-span-2 border bg-blue-700 px-4 py-2 text-center text-2xl text-white">
           {departureStation}
         </h3>
         {hourAndMinutes}
@@ -120,7 +120,7 @@ const TimetableSection = ({ trainDatasets }: Props) => {
   });
 
   return (
-    <section className="mx-4 my-8 flex flex-col gap-2">
+    <section className="flex flex-col gap-2">
       <h2 className="text-2xl">時刻表</h2>
       <section className="flex flex-wrap justify-around gap-8 rounded-xl bg-white p-8">
         {timetables}

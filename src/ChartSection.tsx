@@ -136,9 +136,9 @@ const ChartSection = ({ state }: Props) => {
   };
 
   return (
-    <section className="mx-4 my-8 flex flex-col gap-2">
+    <section className="flex flex-col gap-2">
       <h2 className="text-2xl">ダイヤグラム</h2>
-      <div className="my-4 flex flex-row gap-2">
+      <div className="flex flex-row gap-2 py-4">
         <p>グラフの高さ:</p>
         <input
           type="range"

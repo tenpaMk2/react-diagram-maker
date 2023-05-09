@@ -24,7 +24,7 @@ const RouteMapSection = ({ state }: Props) => {
   });
 
   return (
-    <section className="mx-4 my-8 flex flex-col gap-2">
+    <section className="flex flex-col gap-2">
       <h2 className="text-2xl">路線図</h2>
 
       <section

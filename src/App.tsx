@@ -24,22 +24,24 @@ const App = () => {
   }, []);
 
   return (
-    <div className="m-4 rounded-lg bg-slate-100 p-4">
+    <div className="m-4 flex flex-col gap-4 rounded-lg bg-slate-100 py-4">
       <h1 className="text-center text-4xl text-gray-900">
         ダイヤグラム生成くん
       </h1>
 
-      <StationSection stations={state.stations} dispatch={dispatch} />
+      <div className="flex flex-col gap-8 px-4">
+        <StationSection stations={state.stations} dispatch={dispatch} />
 
-      <TimeInputsSection state={state} dispatch={dispatch} />
+        <TimeInputsSection state={state} dispatch={dispatch} />
 
-      <ChartSection state={state} />
+        <ChartSection state={state} />
 
-      <TimetableSection trainDatasets={state.trainDatasets} />
+        <TimetableSection trainDatasets={state.trainDatasets} />
 
-      <RouteMapSection state={state} />
+        <RouteMapSection state={state} />
 
-      <SaveLoadSection state={state} dispatch={dispatch} />
+        <SaveLoadSection state={state} dispatch={dispatch} />
+      </div>
 
       <Footer />
     </div>
