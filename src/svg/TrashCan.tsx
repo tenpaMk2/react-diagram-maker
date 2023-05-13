@@ -2,7 +2,7 @@
  * @see https://heroicons.com/
  */
 
-const TrashCan = () => (
+export const TrashCan = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -18,5 +18,3 @@ const TrashCan = () => (
     />
   </svg>
 );
-
-export default TrashCan;

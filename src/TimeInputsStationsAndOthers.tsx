@@ -1,6 +1,6 @@
 type Props = { timeInputsStations: string[] };
 
-const TimeInputsStationsAndOthers = ({ timeInputsStations }: Props) => (
+export const TimeInputsStationsAndOthers = ({ timeInputsStations }: Props) => (
   <>
     {timeInputsStations.length ? (
       <>
@@ -26,5 +26,3 @@ const TimeInputsStationsAndOthers = ({ timeInputsStations }: Props) => (
     ))}
   </>
 );
-
-export default TimeInputsStationsAndOthers;

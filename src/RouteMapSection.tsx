@@ -4,7 +4,7 @@ import { State } from "./reducer/reducer";
 
 type Props = { state: State };
 
-const RouteMapSection = ({ state }: Props) => {
+export const RouteMapSection = ({ state }: Props) => {
   const eachTrainDatas = state.trainDatasets.map((trainDataset) => {
     const isPasses = state.stations.map((station) => {
       const notPasses = trainDataset.data.filter(
@@ -66,5 +66,3 @@ const RouteMapSection = ({ state }: Props) => {
     </section>
   );
 };
-
-export default RouteMapSection;

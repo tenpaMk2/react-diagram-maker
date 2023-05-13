@@ -1,12 +1,12 @@
 import { useEffect, useReducer } from "react";
-import StationSection from "./StationSection";
-import TimeInputsSection from "./TimeInputsSection";
-import ChartSection from "./ChartSection";
-import Footer from "./Footer";
-import TimetableSection from "./TimetableSection";
+import { StationSection } from "./StationSection";
+import { TimeInputsSection } from "./TimeInputsSection";
+import { ChartSection } from "./ChartSection";
+import { Footer } from "./Footer";
+import { TimetableSection } from "./TimetableSection";
 import { reducer } from "./reducer/reducer";
-import RouteMapSection from "./RouteMapSection";
-import SaveLoadSection from "./SaveLoadSection";
+import { RouteMapSection } from "./RouteMapSection";
+import { SaveLoadSection } from "./SaveLoadSection";
 import { getInitialState } from "./lib/initial-state";
 
 const handleBeforeUnloadEvent = (event: BeforeUnloadEvent) => {
@@ -14,7 +14,7 @@ const handleBeforeUnloadEvent = (event: BeforeUnloadEvent) => {
   event.returnValue = ``;
 };
 
-const App = () => {
+export const App = () => {
   const [state, dispatch] = useReducer(reducer, getInitialState());
 
   useEffect(() => {
@@ -47,5 +47,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

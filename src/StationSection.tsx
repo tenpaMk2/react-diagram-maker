@@ -1,14 +1,14 @@
 import { Dispatch } from "react";
 import { Actions } from "./reducer/reducer";
-import Station from "./Station";
-import TextInput from "./TextInput";
+import { Station } from "./Station";
+import { TextInput } from "./TextInput";
 
 type Props = {
   stations: string[];
   dispatch: Dispatch<Actions>;
 };
 
-const StationSection = ({ stations, dispatch }: Props) => (
+export const StationSection = ({ stations, dispatch }: Props) => (
   <section className="flex flex-col gap-4">
     <h2 className="text-2xl text-gray-800">駅</h2>
 
@@ -44,5 +44,3 @@ const StationSection = ({ stations, dispatch }: Props) => (
     </div>
   </section>
 );
-
-export default StationSection;

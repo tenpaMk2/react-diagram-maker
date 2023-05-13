@@ -1,10 +1,10 @@
-import TrashCan from "./svg/TrashCan";
+import { TrashCan } from "./svg/TrashCan";
 
 type Props = {
   onClick: () => void;
 };
 
-const TrashButton = ({ onClick }: Props) => (
+export const TrashButton = ({ onClick }: Props) => (
   <button
     type="button"
     className="h-fit w-fit rounded-lg bg-red-600 p-2 text-white hover:bg-red-500"
@@ -13,5 +13,3 @@ const TrashButton = ({ onClick }: Props) => (
     <TrashCan />
   </button>
 );
-
-export default TrashButton;

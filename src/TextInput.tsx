@@ -5,7 +5,7 @@ type Props = {
   onEnterPress: (text: string) => void;
 };
 
-const TextInput = ({ placeholder, onEnterPress }: Props) => {
+export const TextInput = ({ placeholder, onEnterPress }: Props) => {
   const [text, setText] = useState(``);
   const [isComposing, setIsComposing] = useState(false);
 
@@ -34,5 +34,3 @@ const TextInput = ({ placeholder, onEnterPress }: Props) => {
     />
   );
 };
-
-export default TextInput;

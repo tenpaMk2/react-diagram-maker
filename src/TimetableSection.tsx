@@ -8,7 +8,7 @@ type Props = {
   trainDatasets: TrainDataset[];
 };
 
-const TimetableSection = ({ trainDatasets }: Props) => {
+export const TimetableSection = ({ trainDatasets }: Props) => {
   const xYKeysOnlyDeparture =
     trainDatasets.length === 0
       ? []
@@ -128,5 +128,3 @@ const TimetableSection = ({ trainDatasets }: Props) => {
     </section>
   );
 };
-
-export default TimetableSection;

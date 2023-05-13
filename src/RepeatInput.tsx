@@ -5,7 +5,7 @@ type Props = {
   onRepeatChange: (repeat: number) => void;
 };
 
-const RepeatInput = ({ value, onRepeatChange }: Props) => {
+export const RepeatInput = ({ value, onRepeatChange }: Props) => {
   return (
     <input
       type="number"
@@ -18,5 +18,3 @@ const RepeatInput = ({ value, onRepeatChange }: Props) => {
     />
   );
 };
-
-export default RepeatInput;

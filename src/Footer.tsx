@@ -15,7 +15,7 @@ import {
 
 const url = `https://tenpamk2-blog.netlify.app/apps/react-diagram-maker/`; // WARNING: Sync this setting with other files.
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="flex flex-col items-center gap-2 text-sm italic text-gray-400">
       <div className="flex flex-wrap justify-center gap-2">
@@ -54,5 +54,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

@@ -1,5 +1,5 @@
-import DownArrow from "./svg/DownArrow";
-import TrashButton from "./TrashButton";
+import { DownArrow } from "./svg/DownArrow";
+import { TrashButton } from "./TrashButton";
 
 type Props = {
   stationName: string;
@@ -10,7 +10,12 @@ type Props = {
 
 const borderStyle = `h-full min-h-[0.5rem] w-px bg-gray-300`;
 
-const Station = ({ stationName, isFirst, isLast, removeStation }: Props) => (
+export const Station = ({
+  stationName,
+  isFirst,
+  isLast,
+  removeStation,
+}: Props) => (
   <>
     <div className="flex h-full flex-col items-center">
       <div className={`${borderStyle}${isFirst ? ` invisible` : ``}`} />
@@ -23,5 +28,3 @@ const Station = ({ stationName, isFirst, isLast, removeStation }: Props) => (
     <TrashButton onClick={() => removeStation(stationName)} />
   </>
 );
-
-export default Station;

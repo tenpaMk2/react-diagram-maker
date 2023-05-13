@@ -4,7 +4,7 @@ type Props = {
   onIsMoveForwardChange: (isMoveForward: boolean) => void;
 };
 
-const IsMoveForward = ({ onIsMoveForwardChange }: Props) => {
+export const IsMoveForward = ({ onIsMoveForwardChange }: Props) => {
   return (
     <input
       type="checkbox"
@@ -16,5 +16,3 @@ const IsMoveForward = ({ onIsMoveForwardChange }: Props) => {
     ></input>
   );
 };
-
-export default IsMoveForward;

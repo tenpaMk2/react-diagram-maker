@@ -1,8 +1,8 @@
 import { Dispatch } from "react";
 import { Actions, State } from "./reducer/reducer";
-import TextInput from "./TextInput";
-import TimeListEachTrain from "./TimeInputsEachTrain";
-import TimeInputsStationsAndOthers from "./TimeInputsStationsAndOthers";
+import { TextInput } from "./TextInput";
+import { TimeListEachTrain } from "./TimeInputsEachTrain";
+import { TimeInputsStationsAndOthers } from "./TimeInputsStationsAndOthers";
 
 export const stationsToDownAndUpStations = (stations: string[]): string[] => {
   const downAndUpSingle = [...stations, ...stations.slice(0, -1).reverse()];
@@ -37,7 +37,7 @@ type Props = {
   dispatch: Dispatch<Actions>;
 };
 
-const TimeInputsSection = ({ state, dispatch }: Props) => {
+export const TimeInputsSection = ({ state, dispatch }: Props) => {
   const timeInputsLabels = stationsToTimeInputsLabels(state.stations);
 
   const gridTemplateRowsStyle = {
@@ -68,7 +68,7 @@ const TimeInputsSection = ({ state, dispatch }: Props) => {
       <TextInput placeholder="電車名を入力" onEnterPress={onEnterPress} />
 
       <div
-        className={`grid grid-flow-col items-baseline gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4`}
+        className="grid grid-flow-col items-baseline gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4"
         style={gridTemplateRowsStyle}
       >
         <TimeInputsStationsAndOthers timeInputsStations={timeInputsLabels} />
@@ -84,5 +84,3 @@ const TimeInputsSection = ({ state, dispatch }: Props) => {
     </section>
   );
 };
-
-export default TimeInputsSection;

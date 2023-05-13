@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch, DragEvent, MouseEvent } from "react";
 import { jSONToState } from "./lib/StateValidator";
 import { Actions, State } from "./reducer/reducer";
-import Upload from "./svg/Upload";
+import { Upload } from "./svg/Upload";
 
 const createFileName = (): string => {
   const d = new Date();
@@ -16,7 +16,7 @@ type Props = {
   dispatch: Dispatch<Actions>;
 };
 
-const SaveLoadSection = ({ state, dispatch }: Props) => {
+export const SaveLoadSection = ({ state, dispatch }: Props) => {
   /**
    * @see https://codesandbox.io/s/4t2xb
    */
@@ -112,5 +112,3 @@ const SaveLoadSection = ({ state, dispatch }: Props) => {
     </>
   );
 };
-
-export default SaveLoadSection;

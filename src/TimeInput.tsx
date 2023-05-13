@@ -14,7 +14,12 @@ type Props = {
   onIsPassChange: (isPass: boolean) => void;
 };
 
-const TimeInput = ({ value, isPass, onTimeChange, onIsPassChange }: Props) => {
+export const TimeInput = ({
+  value,
+  isPass,
+  onTimeChange,
+  onIsPassChange,
+}: Props) => {
   assertTime(value);
 
   return (
@@ -44,5 +49,3 @@ const TimeInput = ({ value, isPass, onTimeChange, onIsPassChange }: Props) => {
     </section>
   );
 };
-
-export default TimeInput;

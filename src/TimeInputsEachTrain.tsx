@@ -1,11 +1,11 @@
 import { Dispatch, RefObject, useEffect, useRef, useState } from "react";
 import { CirclePicker, ColorResult, RGBColor } from "react-color";
-import IsMoveForward from "./IsMoveForward";
+import { IsMoveForward } from "./IsMoveForward";
 import { colorToRGBA } from "./lib/Color";
 import { Actions } from "./reducer/reducer";
-import RepeatInput from "./RepeatInput";
-import TimeInput from "./TimeInput";
-import TrashButton from "./TrashButton";
+import { RepeatInput } from "./RepeatInput";
+import { TimeInput } from "./TimeInput";
+import { TrashButton } from "./TrashButton";
 
 export type XYKey = { x: Date; y: string; key: string; isPass: boolean };
 
@@ -59,7 +59,7 @@ type Props = {
   dispatch: Dispatch<Actions>;
 };
 
-const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
+export const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
   const [hidden, setHidden] = useState<`hidden` | ``>(`hidden`);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -193,5 +193,3 @@ const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
     </>
   );
 };
-
-export default TimeListEachTrain;

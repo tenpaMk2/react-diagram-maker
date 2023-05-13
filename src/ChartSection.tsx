@@ -95,7 +95,7 @@ const trainDatasetsToChartDatasets = (
 
 type Props = { state: State };
 
-const ChartSection = ({ state }: Props) => {
+export const ChartSection = ({ state }: Props) => {
   const [height, setHeight] = useState<number>(50);
 
   const options: ChartOptions<`scatter`> = {
@@ -174,5 +174,3 @@ const ChartSection = ({ state }: Props) => {
     </section>
   );
 };
-
-export default ChartSection;
