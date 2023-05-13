@@ -9,6 +9,7 @@ import { RouteMapSection } from "./RouteMapSection";
 import { SaveLoadSection } from "./SaveLoadSection";
 import { getInitialState } from "./lib/initial-state";
 import { Tabs, TabItems } from "./Tabs";
+import { Usage } from "./Usage";
 
 const handleBeforeUnloadEvent = (event: BeforeUnloadEvent) => {
   event.preventDefault();
@@ -36,7 +37,7 @@ export const App = () => {
         <SaveLoadSection state={state} dispatch={dispatch} />
       </>
     ),
-    使い方: <>WIP</>,
+    使い方: <Usage />,
     更新履歴: <>WIP</>,
   };
 
