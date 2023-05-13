@@ -19,5 +19,19 @@ export const ChangeLog = () => (
         <p>⚡️: 『使い方』と『更新履歴』のタブを追加。</p>
       </div>
     </section>
+    <section className="flex flex-col gap-4">
+      <h2 className="text-2xl text-gray-800">v1.5.0以前</h2>
+      <div className="flex flex-col gap-2 rounded-xl bg-white p-4">
+        <p>
+          <a
+            href="https://github.com/tenpaMk2/react-diagram-maker/"
+            className="text-blue-500 underline"
+          >
+            GitHub
+          </a>
+          見て。
+        </p>
+      </div>
+    </section>
   </>
 );

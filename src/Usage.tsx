@@ -40,5 +40,13 @@ export const Usage = () => (
         />
       </div>
     </section>
+    <section className="flex flex-col gap-4">
+      <h2 className="text-2xl text-gray-800">既知の不具合</h2>
+      <div className="flex flex-col gap-2 rounded-xl bg-white p-4">
+        <p>
+          MacのSafariで、IMEの変換完了時のEnterキー押下で駅名や列車名が入力されてしまいます。他のWebブラウザを使ってください。
+        </p>
+      </div>
+    </section>
   </>
 );
