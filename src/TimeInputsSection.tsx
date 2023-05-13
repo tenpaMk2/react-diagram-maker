@@ -68,7 +68,7 @@ export const TimeInputsSection = ({ state, dispatch }: Props) => {
       <TextInput placeholder="電車名を入力" onEnterPress={onEnterPress} />
 
       <div
-        className="grid grid-flow-col items-baseline gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4"
+        className="grid grid-flow-col items-center gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4"
         style={gridTemplateRowsStyle}
       >
         <TimeInputsStationsAndOthers timeInputsStations={timeInputsLabels} />

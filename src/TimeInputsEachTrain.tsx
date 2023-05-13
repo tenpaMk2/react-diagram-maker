@@ -182,6 +182,7 @@ export const TimeListEachTrain = ({ trainDataset, dispatch }: Props) => {
           key={xYKey.key}
           value={dateToInputValue(xYKey.x)}
           isPass={xYKey.isPass}
+          isArraival={xYKey.key.endsWith(`着`)}
           onTimeChange={(inputValue: string) => {
             onTimeChange(xYKey.key, inputValue);
           }}

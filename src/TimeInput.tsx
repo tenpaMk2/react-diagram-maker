@@ -10,6 +10,7 @@ const assertTime = (value: string) => {
 type Props = {
   value: string;
   isPass: boolean;
+  isArraival: boolean;
   onTimeChange: (time: string) => void;
   onIsPassChange: (isPass: boolean) => void;
 };
@@ -17,13 +18,18 @@ type Props = {
 export const TimeInput = ({
   value,
   isPass,
+  isArraival,
   onTimeChange,
   onIsPassChange,
 }: Props) => {
   assertTime(value);
 
+  const paddingStyle = isArraival ? ` pt-6` : ``;
+
   return (
-    <section className="flex items-baseline justify-between gap-x-4	">
+    <section
+      className={`flex items-baseline justify-between gap-x-4${paddingStyle}`}
+    >
       <input
         type="time"
         value={value}
