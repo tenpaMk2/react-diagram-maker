@@ -3,25 +3,25 @@ import TrashButton from "./TrashButton";
 
 type Props = {
   stationName: string;
+  isFirst: boolean;
   isLast: boolean;
   removeStation: (staionName: string) => void;
 };
 
-const Station = ({ stationName, isLast, removeStation }: Props) => (
-  <div className="flex gap-4">
-    <div className="flex flex-col items-center">
-      <div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border">
-          <DownArrow />
-        </div>
+const borderStyle = `h-full min-h-[0.5rem] w-px bg-gray-300`;
+
+const Station = ({ stationName, isFirst, isLast, removeStation }: Props) => (
+  <>
+    <div className="flex h-full flex-col items-center">
+      <div className={`${borderStyle}${isFirst ? ` invisible` : ``}`} />
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
+        <DownArrow />
       </div>
-      <div className="h-full w-px bg-gray-300"></div>
+      <div className={`${borderStyle}${isLast ? ` invisible` : ``}`} />
     </div>
-    <div className={isLast ? `pt-1` : `pb-8 pt-2`}>
-      <p className="text-xl font-bold text-gray-600">{stationName}</p>
-    </div>
+    <div className="text-xl font-bold text-gray-600">{stationName}</div>
     <TrashButton onClick={() => removeStation(stationName)} />
-  </div>
+  </>
 );
 
 export default Station;
