@@ -10,6 +10,7 @@ import { SaveLoadSection } from "./SaveLoadSection";
 import { getInitialState } from "./lib/initial-state";
 import { Tabs, TabItems } from "./Tabs";
 import { Usage } from "./Usage";
+import { ChangeLog } from "./ChangeLog";
 
 const handleBeforeUnloadEvent = (event: BeforeUnloadEvent) => {
   event.preventDefault();
@@ -38,7 +39,7 @@ export const App = () => {
       </>
     ),
     使い方: <Usage />,
-    更新履歴: <>WIP</>,
+    更新履歴: <ChangeLog />,
   };
 
   return (
