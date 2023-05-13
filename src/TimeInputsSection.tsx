@@ -47,26 +47,25 @@ const TimeInputsSection = ({ state, dispatch }: Props) => {
     gridTemplateColumns: "max-content",
   };
 
+  const onEnterPress = (text: string) => {
+    const filtered = state.trainDatasets.filter(
+      (trainDataset) => trainDataset.train === text
+    );
+    if (0 < filtered.length) {
+      alert(`列車名が重複しています。`);
+      return;
+    }
+    dispatch({
+      type: `addTrain`,
+      payload: { train: text },
+    });
+  };
+
   return (
     <section className="flex flex-col gap-4">
       <h2 className="text-2xl">列車と発着時刻</h2>
 
-      <TextInput
-        placeholder="電車名を入力"
-        onEnterPress={(text: string) => {
-          const filtered = state.trainDatasets.filter(
-            (trainDataset) => trainDataset.train === text
-          );
-          if (0 < filtered.length) {
-            alert(`列車名が重複しています。`);
-            return;
-          }
-          dispatch({
-            type: `addTrain`,
-            payload: { train: text },
-          });
-        }}
-      />
+      <TextInput placeholder="電車名を入力" onEnterPress={onEnterPress} />
 
       <div
         className={`grid grid-flow-col items-baseline gap-x-4 overflow-scroll rounded-xl bg-white py-4 pr-4`}
